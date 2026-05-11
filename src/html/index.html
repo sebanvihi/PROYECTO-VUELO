@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head lang = "es">
+        <title>BelViaggio - Inicio</title>
+        <meta charset="utf-8"/>
+        <meta name = "description" content ="Bienvenido a BelViaggio, tu nuevaagencia de viajes favorita!" />
+        <meta name = "viewport" content="width-device width, initial-scale = 1.0"/>
+        <link rel="stylesheet" href="../css/styles.css">
+    </head>
+    <body>
+
+        <header class = "header">
+            <section class = "header-logo-container">
+                <img src = "../../img/logo1.png" alt="Logo de BelViaggio" width="100px" height="50px"/>
+                <span id = "titulo">BelViaggio</span>
+            </section>
+            <nav class = "headerNav">
+                <a href = "" class="headerNav-link">Mis Viajes</a>
+                <a href = "" class = "headerNav-link">Ayuda</a>
+            </nav>
+        </header>
+        
+        <main class = "mainContent">
+            <div class="seleccionador">
+                <div class="tipoViaje">
+                    <input type="radio" id="idaVuelta" name="tipoViaje" checked>
+                    <label for="idaVuelta">Ida y Vuelta</label>
+                    
+                    <input type="radio" id="soloIda" name="tipoViaje">
+                    <label for="soloIda">Solo Ida</label>
+                </div>
+
+                <div class="contenedor-inputs">
+                    <div class="input-grupo">
+                        <label>Origen</label>
+                        <input type="text" placeholder="Ciudad o Aeropuerto" list="origenes"/>
+                    </div>
+                    <div class="input-grupo">
+                        <label>Destino</label>
+                        <input type="text" placeholder="Ciudad o Aeropuerto" list="destinos"/>
+                    </div>
+                </div>
+
+                <div class="contenedor-botones">
+                    <button id="editar">Editar Reserva</button>
+                    <button id="reserva">Reservar</button>
+                </div>
+            </div>
+            <section class="destinosDestacados">
+                <h2>Destinos destacados</h2>
+                <p>Conexiones directas a los mejores destinos</p>
+                <a href="#">Ver todos →</a>
+            </section>
+            <br>
+            <hr>
+        </main>
+        <footer>
+            <span>&copy el pepe</span>
+            <a href="#">About us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </footer>
+
+</html>
