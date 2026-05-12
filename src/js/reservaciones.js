@@ -1,56 +1,85 @@
-
 document.addEventListener('DOMContentLoaded', function() {
+    
     const mapaAsientos = document.getElementById('mapa-asientos');
     const listadoPasajeros = document.getElementById('lista-pasajeros-actual');
     const btnAsignar = document.getElementById('btn-asignar');
     const btnConfirmar = document.getElementById('btn-confirmar');
     const modal = document.getElementById('modal-print');
     const btnCerrar = document.getElementById('btn-cerrar-modal');
+    
     let asientoSeleccionado = null;
     let pasajeroActivo = 0;
+    
     let pasajeros = [
         { nombre: 'Luis', apellido: 'Pérez', sexo: 'Masculino', fecha: '15/03/1990', asiento: null, asistencia: 'No', embarazo: null, menor: false, representante: null },
         { nombre: 'Ana', apellido: 'Gómez', sexo: 'Femenino', fecha: '10/10/1985', asiento: null, asistencia: 'No', embarazo: null, menor: false, representante: null },
         { nombre: 'Carlos', apellido: 'López', sexo: 'Masculino', fecha: '12/06/2015', asiento: null, asistencia: 'No', embarazo: null, menor: true, representante: 'Luis Pérez' }
     ];
+
     function generarAvion() {
         let html = '';
+        
+        const generarFlechas = () => {
+            return `
+            <div class="fila-avion fila-flechas">
+                <div class="bloque-izquierdo indicador-salida-izq">
+                    <span>&lt;&lt;</span>
+                </div>
+                <span class="num-fila"></span>
+                <div class="bloque-derecho indicador-salida-der">
+                    <span>&gt;&gt;</span>
+                </div>
+            </div>`;
+        };
+
         for (let fila = 1; fila <= 22; fila++) {
-            html += '<div class="fila-avion">';
+            
+            if (fila === 1) html += generarFlechas();
+
+            let claseSeparacion = '';
+            if (fila === 3 || fila === 10) {
+                claseSeparacion = ' separacion-cabina';
+            }
+
+            if (fila === 11) html += generarFlechas();
+
             const esClub = (fila <= 2);
             const esEmergencia = (fila === 11); 
-            let asientosIzq = [];
-            let asientosDer = [];
-            if (esClub) { 
-                asientosIzq = ['A', 'C'];
-                asientosDer = ['D', 'F'];
-            } else { 
-                asientosIzq = ['A', 'B', 'C'];
-                asientosDer = ['D', 'E', 'F'];
-            }
+
+            let asientosIzq = esClub ? ['A', 'C'] : ['A', 'B', 'C'];
+            let asientosDer = esClub ? ['D', 'F'] : ['D', 'E', 'F'];
             let tipoCabina = esClub ? 'premium' : 'turista';
+
+            html += `<div class="fila-avion${claseSeparacion}">`;
+
             html += `<div class="bloque-izquierdo">`;
             asientosIzq.forEach(letra => {
                 let clasesAsiento = `asiento ${tipoCabina}`;
-                if (esEmergencia) clasesAsiento += ' emergencia'; 
-                
+                if (esEmergencia) clasesAsiento += ' emergencia';
                 html += `<div class="${clasesAsiento}" data-fila="${fila}" data-letra="${letra}">${letra}</div>`;
             });
             html += `</div>`;
-            html += `<span class="num-fila">${fila}</span>`;
+
+            html += `<span class="num-fila${esEmergencia ? ' fila-emergencia' : ''}">${fila}</span>`;
+
             html += `<div class="bloque-derecho">`;
             asientosDer.forEach(letra => {
                 let clasesAsiento = `asiento ${tipoCabina}`;
-                if (esEmergencia) clasesAsiento += ' emergencia'; 
-                if (fila === 22) clasesAsiento += ' no-disponible';
+                if (esEmergencia) clasesAsiento += ' emergencia';
+                if (fila === 22) clasesAsiento += ' no-disponible'; 
+                
                 html += `<div class="${clasesAsiento}" data-fila="${fila}" data-letra="${letra}">${letra}</div>`;
             });
             html += `</div>`;
 
             html += '</div>';
+
+            if (fila === 22) html += generarFlechas();
         }
+        
         mapaAsientos.innerHTML = html;
     }
+
     function renderPasajeros() {
         listadoPasajeros.innerHTML = '';
         pasajeros.forEach((p, index) => {
@@ -76,8 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
             listadoPasajeros.appendChild(div);
         });
     }
+
     generarAvion();
     renderPasajeros();
+
     mapaAsientos.addEventListener('click', function(e){
         if(e.target.classList.contains('asiento') && !e.target.classList.contains('ocupado') && !e.target.classList.contains('no-disponible')) {
             document.querySelectorAll('.asiento.seleccionado').forEach(el => el.classList.remove('seleccionado'));
@@ -101,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Confirmar la reserva y mostrar el boleto
     btnConfirmar.addEventListener('click', function(){
         let todosAsignados = pasajeros.every(p => p.asiento !== null);
         if(!todosAsignados) {
@@ -117,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.classList.remove('no-activo');
     });
 
-    // Cerrar el modal y volver al inicio
     btnCerrar.addEventListener('click', function(){
         modal.classList.add('no-activo');
         window.location.href = 'index.html';
