@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BelViaggio - Inicio</title>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/inicio.css">
 </head>
 <body>
     <header>
@@ -12,23 +12,33 @@
         <span class="header-title">BelViaggio</span>
     </header>
     <main>
-        <div class = "mainContent">
+        <div class="mainContent">
             <h2>Bienvenido a BelViaggio</h2>
             <p>Explora los mejores destinos turísticos con BelViaggio.</p>
         </div>
-        <div class = "seleccionador">
+        
+        <div class="seleccionador">
             <div class="radio-group">
-                <input type = "radio" id = "ida" >
+                <input type="radio" id="ida" name="tipoViaje">
                 <label for="ida">IDA</label>
-                
-                <input type = "radio" id = "vuelta">
+
+                <input type="radio" id="vuelta" name="tipoViaje" checked>
                 <label for="vuelta">IDA Y VUELTA</label>
             </div>
-            <label for="origen">Origen</label>
-            <input type="text" placeholder="Selecciona un origen..." id= "origen">
-            <label for="destino">Destino</label>
-            <input type="text" placeholder="Selecciona un destino..." id= "destino">
-            <div class = "contenedor Botones">
+
+            <div class="contenedor-inputs">
+                <div class="input-grupo">
+                    <label for="origen">Origen</label>
+                    <input type="text" placeholder="Selecciona un origen..." id="origen">
+                </div>
+                
+                <div class="input-grupo">
+                    <label for="destino">Destino</label>
+                    <input type="text" placeholder="Selecciona un destino..." id="destino">
+                </div>
+            </div>
+
+            <div class="contenedor-botones">
                 <button class="reservar">Reservar</button>
                 <button>Vuelos Disponibles</button>
             </div>
