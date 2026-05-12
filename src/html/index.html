@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BelViaggio - Inicio</title>
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
     <header>
-        <img src="./css/logo.png" alt="BelViaggio Logo" class="logo">
+        <img src="../img/logo.png" alt="BelViaggio Logo" class="logo">
         <span class="header-title">BelViaggio</span>
     </header>
     <main>
@@ -16,9 +17,26 @@
             <p>Explora los mejores destinos turísticos con BelViaggio.</p>
         </div>
         <div class = "seleccionador">
-
+            <div class="radio-group">
+                <input type = "radio" id = "ida" >
+                <label for="ida">IDA</label>
+                
+                <input type = "radio" id = "vuelta">
+                <label for="vuelta">IDA Y VUELTA</label>
+            </div>
+            <label for="origen">Origen</label>
+            <input type="text" placeholder="Selecciona un origen..." id= "origen">
+            <label for="destino">Destino</label>
+            <input type="text" placeholder="Selecciona un destino..." id= "destino">
+            <div class = "contenedor Botones">
+                <button class="reservar">Reservar</button>
+                <button>Vuelos Disponibles</button>
+            </div>
         </div>
     </main>
+    <footer>
+
+    </footer>
 </body>
 
 </html>
