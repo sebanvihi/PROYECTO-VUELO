@@ -57,18 +57,14 @@ input[type="radio"]:checked::before {
     gap: 20px; 
 }
 
-.input-grupo {
-    flex: 1;
-    display: flex;
-    flex-direction: column; 
-    gap: 8px; 
-}
-
-.input-grupo input {
+.input-grupo input, .input-grupo select {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
+    width: 100%; 
+    background-color: white; 
+    font-family: 'AvantGarde', sans-serif;
 }
 
 .radio-group {

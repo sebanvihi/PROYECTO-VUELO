@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,11 +24,11 @@
         
         <div class="seleccionador">
             <div class="radio-group">
-                <div class = "grupo-ida">
+                <div class="grupo-ida">
                     <input type="radio" id="ida" name="tipoViaje">
                     <label for="ida">IDA</label>
                 </div>
-                <div class = "grupo-vuelta"> 
+                <div class="grupo-vuelta"> 
                     <input type="radio" id="vuelta" name="tipoViaje" checked>
                     <label for="vuelta">IDA Y VUELTA</label>
                 </div>
@@ -37,22 +37,45 @@
             <div class="contenedor-inputs">
                 <div class="input-grupo">
                     <label for="origen">Origen</label>
-                    <input type="text" placeholder="Selecciona un origen..." id="origen">
+                    <select id="origen">
+                        <option value="" disabled selected>Selecciona un origen...</option>
+                        <option value="Caracas">Caracas</option>
+                        <option value="Valencia">Valencia</option>
+                        <option value="Maracaibo">Maracaibo</option>
+                        <option value="Porlamar">Porlamar</option>
+                        <option value="Madrid">Madrid</option>
+                        <option value="Bogotá">Bogotá</option>
+                        <option value="Miami">Miami</option>
+                        <option value="Panamá">Panamá</option>
+                        <option value="Buenos Aires">Buenos Aires</option>
+                        <option value="Lima">Lima</option>
+                    </select>
                 </div>
                 
                 <div class="input-grupo">
                     <label for="destino">Destino</label>
-                    <input type="text" placeholder="Selecciona un destino..." id="destino">
+                    <select id="destino">
+                        <option value="" disabled selected>Selecciona un destino...</option>
+                        <option value="Caracas">Caracas</option>
+                        <option value="Valencia">Valencia</option>
+                        <option value="Maracaibo">Maracaibo</option>
+                        <option value="Porlamar">Porlamar</option>
+                        <option value="Madrid">Madrid</option>
+                        <option value="Bogotá">Bogotá</option>
+                        <option value="Miami">Miami</option>
+                        <option value="Panamá">Panamá</option>
+                        <option value="Buenos Aires">Buenos Aires</option>
+                        <option value="Lima">Lima</option>
+                    </select>
                 </div>
             </div>
-
             <div class="contenedor-botones">
                 <button class="reservar">Reservar</button>
-                
                 <button class="vuelos" onclick="window.location.href='vuelos.html'">Vuelos Disponibles</button>
             </div>
         </div>
-    </main> 
-</body>
 
+    </main> 
+    <script src="../js/index.js"></script>
+</body>
 </html>
