@@ -28,52 +28,62 @@
         </nav>
     </header>
 
-    <div class="contenido-principal">
-        <main>
-            <div class="contenedor-destino">
-                <div class="destino-superior">
-                    <h2 id="ciudad-destino">Madrid</h2>
-                    <p id="tiempo-vuelo">9h 30min</p>
+    <main>
+        <div id="contenedor-destino" class="contenedor-destino">
+            <div class="destino-superior">
+                <h2 id="ciudad-destino">Madrid</h2>
+                <p id="tiempo-vuelo">9h 30min</p>
+            </div>
+            <div class="destino-inferior">
+                <div class="hora-salida">
+                    <span class="etiqueta-hora">Salida</span>
+                    <span id="hora-salida">08:30</span>
                 </div>
-                <div class="destino-inferior">
-                    <div class="hora-salida">
-                        <span class="etiqueta-hora">Salida</span>
-                        <span id="hora-salida">08:30</span>
-                    </div>
-                    <div class="hora-llegada">
-                        <span class="etiqueta-hora">Llegada</span>
-                        <span id="hora-llegada">18:00</span>
-                    </div>
+                <div class="hora-llegada">
+                    <span class="etiqueta-hora">Llegada</span>
+                    <span id="hora-llegada">18:00</span>
                 </div>
             </div>
+        </div>
 
-            <div id="formulario-general" class="contenedor-formulario activo">
-                <h3>Formulario General</h3>
-                <div class="grupo-campo">
-                    <label for="correo">Correo de contacto</label>
-                    <input type="email" id="correo" placeholder="ejemplo@correo.com">
-                </div>
-                <div class="grupo-campo">
-                    <label for="telefono">Teléfono de contacto</label>
-                    <input type="tel" id="telefono" placeholder="+58 412 1234567">
-                </div>
-                <div class="grupo-campo">
-                    <label for="num-pasajeros">Número de pasajeros</label>
-                    <select id="num-pasajeros">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                    </select>
-                </div>
+        <div id="formulario-general" class="contenedor-formulario" style="display: flex;">
+            <h3>Formulario General</h3>
+            <div class="grupo-campo">
+                <label for="tipo-cabina">Tipo de Cabina</label>
+                <select id="tipo-cabina">
+                    <option value="turista">Turista</option>
+                    <option value="economy-club">Economy-Club</option>
+                </select>
             </div>
+            <div class="grupo-campo">
+                <label for="correo">Correo de contacto</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.com">
+            </div>
+            <div class="grupo-campo">
+                <label for="telefono">Teléfono de contacto</label>
+                <input type="tel" id="telefono" placeholder="+58 412 1234567">
+            </div>
+            <div class="grupo-campo">
+                <label for="num-pasajeros">Número de pasajeros</label>
+                <select id="num-pasajeros">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+            <div class="contenedor-botones-formulario-simple">
+                <button id="btn-siguiente-general" class="btn-accion-formulario">| Siguiente | &gt;&gt;</button>
+            </div>
+        </div>
 
-            <div id="barra-pasajeros" class="barra-navegacion-pasajeros no-activo">
+        <div id="contenedor-especifico" class="contenedor-especifico" style="display: none;">
+            <div id="barra-pasajeros" class="barra-navegacion-pasajeros">
                 <button id="btn-pasajero-anterior" class="btn-nav-pasajero">&lt;</button>
                 <div id="lista-pasajeros" class="lista-pasajeros">
                     <span class="nombre-pasajero activo">Pasajero 1</span>
@@ -81,11 +91,11 @@
                 <button id="btn-pasajero-siguiente" class="btn-nav-pasajero">&gt;</button>
             </div>
 
-            <div id="formulario-especifico" class="contenedor-formulario no-activo">
+            <div id="formulario-especifico" class="contenedor-formulario-especifico" style="display: flex;">
                 <h3>Formulario de Pasajero</h3>
                 <div class="grupo-campo">
                     <label for="nombre">Nombre(s)</label>
-                    <input type="text" id="nombre">
+                    <input type="text" id="nombre" placeholder="Pedro Javier">
                 </div>
                 <div class="grupo-campo">
                     <label for="apellido">Apellido(s)</label>
@@ -119,6 +129,19 @@
                     </div>
                 </div>
                 <div class="grupo-campo">
+                    <label>Numero de Teléfono de Contacto</label>
+                    <div class="prefijo-telefono">
+                        <select id="codigo-pais" class="select-prefijo">
+                            <option value="+58">+58 🇻🇪</option>
+                            <option value="+1">+1 🇺🇸</option>
+                            <option value="+34">+34 🇪🇸</option>
+                            <option value="+52">+52 🇲🇽</option>
+                            <option value="+54">+54 🇦🇷</option>
+                        </select>
+                        <input type="tel" id="numero-telefono" placeholder="412 1234567" class="input-numero">
+                    </div>
+                </div>
+                <div class="grupo-campo">
                     <label>¿Necesita asistencia especial?</label>
                     <div class="radio-group">
                         <input type="radio" id="asist-si" name="asistencia" value="Si">
@@ -138,155 +161,50 @@
                     </select>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <aside>
-            <div id="acuerdos" class="contenedor-acuerdos">
-                <h3>Acuerdos y especificaciones</h3>
-                <div id="acuerdos-general" class="texto-acuerdo activo">
-                    <p><strong>Formulario General:</strong> Ingrese los datos de contacto y el número de personas que viajarán.</p>
-                    <p><strong>Correo de contacto:</strong> Email donde se enviará la confirmación de la reserva.</p>
-                    <p><strong>Teléfono de contacto:</strong> Número al que podamos contactar si hay cambios en el vuelo.</p>
-                    <p><strong>Número de pasajeros:</strong> Máximo 9 por reserva online. Para grupos mayores, contacte con la aerolínea.</p>
-                </div>
-                <div id="acuerdos-especifico" class="texto-acuerdo no-activo">
-                    <p><strong>Formulario Específico:</strong> Datos personales de cada pasajero. Son obligatorios nombre, apellido, fecha de nacimiento y sexo.</p>
-                    <p><strong>Fecha de Nacimiento:</strong> dd/mm/aaaa. Se usa para determinar si es menor de edad.</p>
-                    <p><strong>Asistencia especial:</strong> Si requiere ayuda, por favor indíquelo. Las filas de emergencia no estarán disponibles para usted.</p>
-                    <p><strong>Representante:</strong> Los menores de edad deben estar vinculados a un adulto del grupo.</p>
-                </div>
+    <aside>
+        <div id="acuerdos" class="contenedor-acuerdos">
+            <h3>Acuerdos y especificaciones</h3>
+            <div id="acuerdos-general" class="texto-acuerdo activo">
+                <p><strong>Formulario General:</strong> Ingrese los datos de contacto y el número de personas que viajarán.</p>
+                <p><strong>Tipo de Cabina:</strong> Turista (clase estándar) o Economy-Club (premium).</p>
+                <p><strong>Correo de contacto:</strong> Email donde se enviará la confirmación de la reserva.</p>
+                <p><strong>Teléfono de contacto:</strong> Número al que podamos contactar si hay cambios en el vuelo.</p>
+                <p><strong>Número de pasajeros:</strong> Máximo 9 por reserva online. Para grupos mayores, contacte con la aerolínea.</p>
             </div>
-            <div id="contenedor-botones-form" class="contenedor-botones-formulario">
-                <button id="btn-siguiente-general" class="btn-accion-formulario">| Siguiente | &gt;&gt;</button>
-                <button id="btn-siguiente-especifico" class="btn-accion-formulario no-activo">| Siguiente | &gt;&gt;</button>
-                <button id="btn-regresar" class="btn-accion-formulario no-activo">&lt;&lt; | Regresar |</button>
+            <div id="acuerdos-especifico" class="texto-acuerdo no-activo">
+                <p><strong>Formulario Específico:</strong> Datos personales de cada pasajero. Son obligatorios nombre, apellido, fecha de nacimiento y sexo.</p>
+                <p><strong>Fecha de Nacimiento:</strong> dd/mm/aaaa. Se usa para determinar si es menor de edad.</p>
+                <p><strong>Teléfono de Contacto:</strong> Seleccione el prefijo de su país y escriba el número local.</p>
+                <p><strong>Asistencia especial:</strong> Si requiere ayuda, por favor indíquelo. Las filas de emergencia no estarán disponibles para usted.</p>
+                <p><strong>Representante:</strong> Los menores de edad deben estar vinculados a un adulto del grupo.</p>
             </div>
-        </aside>
-    </div>
+        </div>
+        <div id="contenedor-botones-form" class="contenedor-botones-formulario">
+            <button id="btn-regresar" class="btn-accion-formulario no-activo">&lt;&lt; | Regresar |</button>
+            <button id="btn-siguiente-especifico" class="btn-accion-formulario no-activo">| Siguiente | &gt;&gt;</button>
+        </div>
+    </aside>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const nodo1 = document.getElementById('nodo-1');
-            const nodo2 = document.getElementById('nodo-2');
-            const formularioGeneral = document.getElementById('formulario-general');
-            const barraPasajeros = document.getElementById('barra-pasajeros');
-            const formularioEspecifico = document.getElementById('formulario-especifico');
-            const btnSiguienteGeneral = document.getElementById('btn-siguiente-general');
-            const btnSiguienteEspecifico = document.getElementById('btn-siguiente-especifico');
-            const btnRegresar = document.getElementById('btn-regresar');
-            const acuerdosGeneral = document.getElementById('acuerdos-general');
-            const acuerdosEspecifico = document.getElementById('acuerdos-especifico');
-            const numPasajerosSelect = document.getElementById('num-pasajeros');
-            const listaPasajeros = document.getElementById('lista-pasajeros');
-            const campoRepresentante = document.getElementById('campo-representante');
-            const campoEmbarazo = document.getElementById('campo-embarazo');
-            const campoAsistencia = document.getElementById('campo-asistencia');
-            const fechaNacimiento = document.getElementById('fecha-nacimiento');
-            const sexoM = document.getElementById('sexo-m');
-            const sexoF = document.getElementById('sexo-f');
-            const asistSi = document.getElementById('asist-si');
-            const asistNo = document.getElementById('asist-no');
-            let pasoActual = 1;
-            let pasajeroActual = 0;
-            let totalPasajeros = 1;
+    <dialog id="modal-terminos" class="modal-legal">
+        <div class="modal-header">
+            <h2 style="font-family: 'Chunky', sans-serif; margin: 0;">Términos y Condiciones</h2>
+            <button id="cerrar-terminos" class="btn-cerrar">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Bienvenido a BelViaggio. Al utilizar nuestro sistema de reservas, aceptas los siguientes términos:</p>
+            <ol class="lista-legal">
+                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y simulación de reservas de vuelos comerciales.</li>
+                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos y verdaderos al momento de realizar cualquier reserva.</li>
+                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a la disponibilidad del sistema en tiempo real.</li>
+                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
+                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están protegidos y son de uso exclusivo de sus creadores.</li>
+            </ol>
+        </div>
+    </dialog>
 
-            function generarListaPasajeros(num) {
-                totalPasajeros = parseInt(num);
-                listaPasajeros.innerHTML = '';
-                for(let i=0; i<totalPasajeros; i++) {
-                    let span = document.createElement('span');
-                    span.className = 'nombre-pasajero';
-                    if(i===0) span.classList.add('activo');
-                    span.textContent = `Pasajero ${i+1}`;
-                    span.dataset.index = i;
-                    span.addEventListener('click', function(e){
-                        document.querySelectorAll('.nombre-pasajero').forEach(el => el.classList.remove('activo'));
-                        this.classList.add('activo');
-                        pasajeroActual = parseInt(this.dataset.index);
-                        // Aquí simularíamos cargar datos del pasajero si ya existen
-                    });
-                    listaPasajeros.appendChild(span);
-                }
-            }
-
-            btnSiguienteGeneral.addEventListener('click', function(){
-                // Validación básica de campos generales
-                let correo = document.getElementById('correo').value;
-                let telefono = document.getElementById('telefono').value;
-                if(!correo || !telefono) { alert('Complete los campos de correo y teléfono'); return; }
-                
-                pasoActual = 2;
-                nodo1.classList.remove('activo');
-                nodo2.classList.add('activo');
-                formularioGeneral.classList.remove('activo');
-                formularioGeneral.classList.add('no-activo');
-                barraPasajeros.classList.remove('no-activo');
-                formularioEspecifico.classList.remove('no-activo');
-                btnSiguienteGeneral.classList.add('no-activo');
-                btnSiguienteEspecifico.classList.remove('no-activo');
-                btnRegresar.classList.remove('no-activo');
-                acuerdosGeneral.classList.remove('activo');
-                acuerdosGeneral.classList.add('no-activo');
-                acuerdosEspecifico.classList.remove('no-activo');
-                acuerdosEspecifico.classList.add('activo');
-                generarListaPasajeros(numPasajerosSelect.value);
-            });
-
-            btnRegresar.addEventListener('click', function(){
-                pasoActual = 1;
-                nodo2.classList.remove('activo');
-                nodo1.classList.add('activo');
-                formularioGeneral.classList.remove('no-activo');
-                formularioGeneral.classList.add('activo');
-                barraPasajeros.classList.add('no-activo');
-                formularioEspecifico.classList.add('no-activo');
-                btnSiguienteGeneral.classList.remove('no-activo');
-                btnSiguienteEspecifico.classList.add('no-activo');
-                btnRegresar.classList.add('no-activo');
-                acuerdosEspecifico.classList.remove('activo');
-                acuerdosEspecifico.classList.add('no-activo');
-                acuerdosGeneral.classList.remove('no-activo');
-                acuerdosGeneral.classList.add('activo');
-            });
-
-            btnSiguienteEspecifico.addEventListener('click', function(){
-                let nombre = document.getElementById('nombre').value;
-                let apellido = document.getElementById('apellido').value;
-                let fecha = fechaNacimiento.value;
-                if(!nombre || !apellido || !fecha) { alert('Complete nombre, apellido y fecha de nacimiento'); return; }
-                // Guardar datos en localStorage y redirigir a reservaciones.html
-                localStorage.setItem('pasoActual', '3');
-                window.location.href = 'reservaciones.html';
-            });
-
-            // Lógica visual para mostrar campos condicionales
-            fechaNacimiento.addEventListener('change', function(){
-                let hoy = new Date();
-                let nacimiento = new Date(this.value.split('/').reverse().join('-'));
-                if(isNaN(nacimiento.getTime())) return;
-                let edad = hoy.getFullYear() - nacimiento.getFullYear();
-                let m = hoy.getMonth() - nacimiento.getMonth();
-                if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
-                if(edad < 18) campoRepresentante.classList.remove('no-visible');
-                else campoRepresentante.classList.add('no-visible');
-            });
-
-            sexoF.addEventListener('change', function(){
-                let fecha = fechaNacimiento.value;
-                if(!fecha) return;
-                let hoy = new Date();
-                let nacimiento = new Date(fecha.split('/').reverse().join('-'));
-                if(isNaN(nacimiento.getTime())) return;
-                let edad = hoy.getFullYear() - nacimiento.getFullYear();
-                let m = hoy.getMonth() - nacimiento.getMonth();
-                if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
-                if(sexoF.checked && edad >= 18) campoEmbarazo.classList.remove('no-visible');
-                else campoEmbarazo.classList.add('no-visible');
-            });
-
-            asistSi.addEventListener('change', function() { campoAsistencia.classList.remove('no-visible'); });
-            asistNo.addEventListener('change', function() { campoAsistencia.classList.add('no-visible'); });
-        });
-    </script>
+    <script src="../js/formularios.js"></script>
 </body>
 </html>

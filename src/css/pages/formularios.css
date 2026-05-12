@@ -44,34 +44,32 @@
 }
 
 /* Layout Principal */
-.contenido-principal {
-    display: flex;
+main {
     flex: 1;
-    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 30px;
+    padding: 30px;
     background-color: var(--color-body);
     min-height: calc(100vh - 80px);
 }
 
-main {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 aside {
-    flex: 1;
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 30px 30px 30px 0;
 }
 
 /* Contenedor Destino */
 .contenedor-destino {
+    flex: 0 0 300px;
     background: white;
     border-radius: 16px;
-    padding: 20px;
+    padding: 25px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
@@ -108,19 +106,16 @@ aside {
     text-transform: uppercase;
 }
 
-/* Formularios */
+/* Formulario General */
 .contenedor-formulario {
+    flex: 1;
     background: white;
     border-radius: 16px;
-    padding: 25px;
+    padding: 30px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 20px;
-}
-
-.contenedor-formulario.activo {
-    display: flex;
 }
 
 .contenedor-formulario h3 {
@@ -129,6 +124,108 @@ aside {
     margin: 0 0 10px;
 }
 
+.contenedor-botones-formulario-simple {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.btn-accion-formulario {
+    background-color: #4cabd3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-accion-formulario:hover {
+    background-color: #2892c3;
+}
+
+.btn-accion-formulario.no-activo {
+    display: none !important;
+}
+
+/* Contenedor Específico */
+.contenedor-especifico {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Formulario Especifico */
+.contenedor-formulario-especifico {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contenedor-formulario-especifico h3 {
+    font-family: 'Chunky', sans-serif;
+    color: #001f3f;
+    margin: 0 0 10px;
+}
+
+/* Barra Navegación Pasajeros */
+.barra-navegacion-pasajeros {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.btn-nav-pasajero {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lista-pasajeros {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 5px 10px;
+}
+
+.nombre-pasajero {
+    padding: 8px 20px;
+    border-radius: 20px;
+    background: #f2f4f6;
+    white-space: nowrap;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nombre-pasajero.activo {
+    background: #4cabd3;
+    color: white;
+}
+
+/* Inputs y campos */
 .grupo-campo {
     display: flex;
     flex-direction: column;
@@ -147,6 +244,7 @@ input[type="text"], input[type="email"], input[type="tel"], select {
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.2s;
+    background-color: white;
 }
 
 input:focus, select:focus {
@@ -154,116 +252,23 @@ input:focus, select:focus {
     outline: none;
 }
 
+.prefijo-telefono {
+    display: flex;
+    gap: 10px;
+}
+
+.select-prefijo {
+    flex: 0 0 120px;
+}
+
+.input-numero {
+    flex: 1;
+}
+
 .no-activo {
     display: none !important;
 }
 
 .no-visible {
-    display: none !important;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-/* Radio buttons personalizados ya están en input.css */
-
-/* Barra Navegación Pasajeros */
-.barra-navegacion-pasajeros {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: white;
-    border-radius: 12px;
-    padding: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.btn-nav-pasajero {
-    background: none;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.lista-pasajeros {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    padding: 5px 10px;
-}
-
-.nombre-pasajero {
-    padding: 8px 16px;
-    border-radius: 20px;
-    background: #f2f4f6;
-    white-space: nowrap;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.nombre-pasajero.activo {
-    background: #4cabd3;
-    color: white;
-}
-
-/* Aside */
-.contenedor-acuerdos {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.texto-acuerdo {
-    display: none;
-}
-
-.texto-acuerdo.activo {
-    display: block;
-}
-
-.texto-acuerdo p {
-    margin: 10px 0;
-    font-size: 0.9rem;
-    color: #555;
-    line-height: 1.5;
-}
-
-.contenedor-botones-formulario {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-top: auto;
-}
-
-.btn-accion-formulario {
-    background-color: #4cabd3;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    justify-content: center;
-    transition: background-color 0.2s;
-}
-
-.btn-accion-formulario:hover {
-    background-color: #2892c3;
-}
-
-.btn-accion-formulario.no-activo {
     display: none !important;
 }
