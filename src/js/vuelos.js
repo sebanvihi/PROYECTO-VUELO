@@ -12,7 +12,6 @@ function cargarPagina() {
 
     if (paramOrigen && paramDestino) {
         const cantidadVuelos = Math.floor(Math.random() * 4); 
-
         if (cantidadVuelos === 0) {
             contenedorTabla.innerHTML = `
                 <div style="text-align: center; padding: 40px 20px;">

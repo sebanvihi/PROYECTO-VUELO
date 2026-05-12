@@ -100,3 +100,41 @@ main {
     border: 1px solid #eaeaea;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
+
+.modal-legal {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    width: 90%;
+    max-width: 650px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin: auto;
+    position: fixed;
+}
+
+.modal-legal::backdrop {
+    background-color: rgba(0, 31, 63, 0.7);
+    backdrop-filter: blur(4px);
+}
+.modal-header {
+    background-color: #001f3f;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: 30px;
+    font-family: 'AvantGarde', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+.lista-legal {
+    padding-left: 20px;
+    margin-top: 15px;
+}
+.lista-legal li {
+    margin-bottom: 12px;
+}

@@ -1,5 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
     const btnReservar = document.querySelector('.reservar');
+    const btnTerminos = document.getElementById('terminos');
+    const modalTerminos = document.getElementById('modal-terminos');
+    const btnCerrarTerminos = document.getElementById('cerrar-terminos');
+
+    btnTerminos.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalTerminos.showModal();
+    });
+
+    btnCerrarTerminos.addEventListener('click', () => {
+        modalTerminos.close();
+    });
+
+    modalTerminos.addEventListener('click', (e) => {
+        if (e.target === modalTerminos) {
+            modalTerminos.close();
+        }
+    });
 
     btnReservar.addEventListener('click', () => {
         const origen = document.getElementById('origen').value;
