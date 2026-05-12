@@ -26,7 +26,7 @@ function generarVuelosAleatorios() {
             let porcentaje = Math.random() * 0.10; 
             asientosDisponibles = Math.floor(TOTAL_ASIENTOS * porcentaje);
         } else if (estado === "A punto de abordar") {
-            let porcentaje = (Math.random() * 0.45) + 0.15; 
+            let porcentaje = (Math.random() * 0.75) + 0.15; 
             asientosDisponibles = Math.floor(TOTAL_ASIENTOS * porcentaje);
         } else if (estado === "Abordando") {
             asientosDisponibles = 0;
@@ -56,7 +56,7 @@ function cargarTabla() {
         } else {
             fila.classList.add('fila-vuelo');
             fila.addEventListener('click', () => {
-                alert(`Has seleccionado el vuelo ${vuelo.id} de ${vuelo.origen} a ${vuelo.destino}.\nTe redirigiendo al formulario...`);
+                alert(`Has seleccionado el vuelo ${vuelo.id} de ${vuelo.origen} a ${vuelo.destino}.\nRedirigiendo al formulario...`);
             });
         }
         fila.innerHTML = `
@@ -67,6 +67,16 @@ function cargarTabla() {
             <td>${vuelo.estado}</td>
             <td><span class="asientos-badge">${vuelo.asientos} / 128</span></td>
         `;
+        cuerpoTabla.appendChild(fila);
     });
 }
-window.onload = cargarTabla;
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const tabla = document.getElementById('cuerpo-tabla');
+    if (!tabla) {
+        console.error("¡ERROR! El JavaScript cargó, pero no encuentra el id='cuerpo-tabla' en el HTML");
+        return;
+    }
+    cargarTabla();
+});
