@@ -14,17 +14,10 @@
             <h1>BelViaggio</h1>
         </div>
         <div class="progreso-reserva">
-            <span id="nodo-1" class="nodo">1</span>
-            <span class="linea"></span>
-            <span id="nodo-2" class="nodo">2</span>
-            <span class="linea"></span>
-            <span id="nodo-3" class="nodo activo">3</span>
+            <span class="nodo">1</span><span class="linea"></span>
+            <span class="nodo">2</span><span class="linea"></span>
+            <span class="nodo activo">3</span>
         </div>
-        <nav>
-            <a href="#" class="headerNav-link">Términos y Condiciones</a>
-            <a href="#" class="headerNav-link">Política de Privacidad</a>
-            <a href="#" class="headerNav-link">Acerca de</a>
-        </nav>
     </header>
 
     <div class="contenido-principal">
@@ -32,32 +25,32 @@
             <div id="avion-container" class="contenedor-avion">
                 <div class="leyenda">
                     <div><span class="color-verde"></span> Disponible</div>
-                    <div><span class="color-amarillo"></span> Salida de Emergencia</div>
+                    <div><span class="color-amarillo"></span> Emergencia</div>
                     <div><span class="color-rojo"></span> Ocupado</div>
-                    <div class="flechas-leyenda">
-                        <span>&lt;&lt;</span> <span>&gt;&gt;</span> Salidas
-                    </div>
                 </div>
+                
                 <div class="avion-scroll">
-                    <div id="mapa-asientos" class="mapa-asientos">
-                        <!-- Renderizado dinámico con JS -->
+                    <div class="silueta-avion">
+                        <div class="nariz-avion"></div>
+                        <div id="mapa-asientos" class="mapa-asientos">
+                            </div>
+                        <div class="cola-avion"></div>
                     </div>
                 </div>
-            </div>
-
-            <div id="menu-pasajeros" class="contenedor-menu">
-                <h3>Pasajeros</h3>
-                <div id="lista-pasajeros-actual"></div>
             </div>
         </main>
 
         <aside>
-            <div class="advertencias">
-                <h3>Advertencias y especificaciones</h3>
-                <p><strong>Menores de edad:</strong> No pueden sentarse en filas de emergencia ni en asientos de pasillo. Solo ventanilla o centro.</p>
-                <p><strong>Necesidades especiales:</strong> Pasajeros con asistencia no pueden ocupar filas de emergencia.</p>
-                <p><strong>Embarazadas:</strong> No pueden sentarse en salidas de emergencia.</p>
+            <div id="menu-pasajeros" class="contenedor-menu">
+                <h3>Pasajeros</h3>
+                <div id="lista-pasajeros-actual"></div>
             </div>
+
+            <div class="advertencias">
+                <h3>Advertencias</h3>
+                <p>Menores no pueden ir en salidas de emergencia.</p>
+            </div>
+
             <div class="contenedor-botones-reserva">
                 <button id="btn-asignar" class="btn-accion">Asignar Asiento</button>
                 <div class="avance-botones">
@@ -68,117 +61,6 @@
         </aside>
     </div>
 
-    <!-- Modal Print -->
-    <div id="modal-print" class="modal no-activo">
-        <div class="modal-contenido">
-            <h2>BOLETO DE RESERVACIÓN</h2>
-            <div id="print-info"></div>
-            <button id="btn-cerrar-modal" class="btn-accion">Confirmar Boleto</button>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mapaAsientos = document.getElementById('mapa-asientos');
-            const listadoPasajeros = document.getElementById('lista-pasajeros-actual');
-            const btnAsignar = document.getElementById('btn-asignar');
-            const btnConfirmar = document.getElementById('btn-confirmar');
-            const modal = document.getElementById('modal-print');
-            const btnCerrar = document.getElementById('btn-cerrar-modal');
-            let asientoSeleccionado = null;
-            let pasajeroActivo = 0;
-            
-            // Datos de ejemplo para prototipo
-            let pasajeros = [
-                { nombre: 'Luis', apellido: 'Pérez', sexo: 'Masculino', fecha: '15/03/1990', asiento: null, asistencia: 'No', embarazo: null, menor: false, representante: null },
-                { nombre: 'Ana', apellido: 'Gómez', sexo: 'Femenino', fecha: '10/10/1985', asiento: null, asistencia: 'No', embarazo: null, menor: false, representante: null },
-                { nombre: 'Carlos', apellido: 'López', sexo: 'Masculino', fecha: '12/06/2015', asiento: null, asistencia: 'No', embarazo: null, menor: true, representante: 'Luis Pérez' }
-            ];
-
-            function generarAvion() {
-                let html = '';
-                for (let fila = 1; fila <= 22; fila++) {
-                    html += '<div class="fila-avion">';
-                    html += `<span class="num-fila">${fila}</span>`;
-                    let asientos = ['A', 'B', 'C', 'D', 'E', 'F'];
-                    let tipoFila = (fila <= 2) ? 'premium' : 'turista';
-                    asientos.forEach(letra => {
-                        let claseExtra = '';
-                        if (fila === 10) claseExtra = 'emergencia';
-                        if (fila === 22) claseExtra = 'no-disponible';
-                        html += `<div class="asiento ${tipoFila} ${claseExtra}" data-fila="${fila}" data-letra="${letra}">${letra}</div>`;
-                    });
-                    html += '</div>';
-                }
-                mapaAsientos.innerHTML = html;
-            }
-
-            function renderPasajeros() {
-                listadoPasajeros.innerHTML = '';
-                pasajeros.forEach((p, index) => {
-                    let div = document.createElement('div');
-                    div.className = `item-pasajero ${index === 0 ? 'activo' : ''}`;
-                    div.dataset.index = index;
-                    let necesidades = [];
-                    if(p.asistencia !== 'No') necesidades.push(p.asistencia);
-                    if(p.embarazo === 'Si') necesidades.push('Embarazo');
-                    let necStr = necesidades.length > 0 ? necesidades.join('/') : 'Ninguna';
-                    div.innerHTML = `
-                        <strong>${p.nombre} ${p.apellido}</strong>
-                        <small>${necStr}; ${p.fecha}</small>
-                        <span class="asiento-asignado">${p.asiento || 'Sin asiento'}</span>
-                    `;
-                    div.addEventListener('click', function(){
-                        document.querySelectorAll('.item-pasajero').forEach(el => el.classList.remove('activo'));
-                        this.classList.add('activo');
-                        pasajeroActivo = index;
-                        document.querySelectorAll('.asiento.seleccionado').forEach(el => el.classList.remove('seleccionado'));
-                        asientoSeleccionado = null;
-                    });
-                    listadoPasajeros.appendChild(div);
-                });
-            }
-
-            generarAvion();
-            renderPasajeros();
-
-            mapaAsientos.addEventListener('click', function(e){
-                if(e.target.classList.contains('asiento') && !e.target.classList.contains('ocupado') && !e.target.classList.contains('no-disponible')) {
-                    document.querySelectorAll('.asiento.seleccionado').forEach(el => el.classList.remove('seleccionado'));
-                    e.target.classList.add('seleccionado');
-                    asientoSeleccionado = e.target.dataset;
-                }
-            });
-
-            btnAsignar.addEventListener('click', function(){
-                if(asientoSeleccionado && pasajeros[pasajeroActivo]) {
-                    let fila = asientoSeleccionado.fila;
-                    let letra = asientoSeleccionado.letra;
-                    let asientoDiv = document.querySelector(`.asiento[data-fila="${fila}"][data-letra="${letra}"]`);
-                    asientoDiv.classList.add('ocupado');
-                    asientoDiv.classList.remove('seleccionado');
-                    pasajeros[pasajeroActivo].asiento = `${fila}${letra}`;
-                    renderPasajeros();
-                    asientoSeleccionado = null;
-                }
-            });
-
-            btnConfirmar.addEventListener('click', function(){
-                let info = `<p><strong>Vuelo:</strong> CCS // MAD</p><p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p><hr>`;
-                pasajeros.forEach((p, i) => {
-                    info += `<p><strong>#${i+1}:</strong> ${p.nombre} ${p.apellido} | ${p.sexo} | ${p.fecha}</p>`;
-                    if(p.menor) info += `<p>Representante: ${p.representante}</p>`;
-                    info += `<p>Necesidades: ${p.asistencia} ${p.embarazo === 'Si' ? '/Embarazo' : ''}</p><hr>`;
-                });
-                document.getElementById('print-info').innerHTML = info;
-                modal.classList.remove('no-activo');
-            });
-
-            btnCerrar.addEventListener('click', function(){
-                modal.classList.add('no-activo');
-                window.location.href = 'index.html';
-            });
-        });
-    </script>
+    <script src="../js/reservaciones.js"></script>
 </body>
 </html>
