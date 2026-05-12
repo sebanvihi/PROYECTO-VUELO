@@ -10,6 +10,11 @@
     <header>
         <img src="../img/logo.png" alt="BelViaggio Logo" class="logo">
         <span class="header-title">BelViaggio</span>
+        <div class="headerNav-link">
+            <a>Terminos y Condiciones</a>
+            <a>Política de Privacidad</a>
+            <a>Acerca de</a>
+        </div>
     </header>
     <main>
         <div class="mainContent">
@@ -19,11 +24,14 @@
         
         <div class="seleccionador">
             <div class="radio-group">
-                <input type="radio" id="ida" name="tipoViaje">
-                <label for="ida">IDA</label>
-
-                <input type="radio" id="vuelta" name="tipoViaje" checked>
-                <label for="vuelta">IDA Y VUELTA</label>
+                <div class = "grupo-ida">
+                    <input type="radio" id="ida" name="tipoViaje">
+                    <label for="ida">IDA</label>
+                </div>
+                <div class = "grupo-vuelta"> 
+                    <input type="radio" id="vuelta" name="tipoViaje" checked>
+                    <label for="vuelta">IDA Y VUELTA</label>
+                </div>
             </div>
 
             <div class="contenedor-inputs">
@@ -40,7 +48,7 @@
 
             <div class="contenedor-botones">
                 <button class="reservar">Reservar</button>
-                <button>Vuelos Disponibles</button>
+                <button class = "vuelos">Vuelos Disponibles</button>
             </div>
         </div>
     </main>

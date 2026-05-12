@@ -12,3 +12,56 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
+main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('fondoBody.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.header {
+    background-color: #001f3f;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#titulo {
+    font-family: 'CooperBT', serif;
+    font-size: 24px;
+    color: white;
+    margin: 0;
+}
+
+.headerNav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.headerNav-link {
+    font-family: 'AvantGarde', sans-serif;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.headerNav-link:hover {
+    color: #00b4d8;
+}
