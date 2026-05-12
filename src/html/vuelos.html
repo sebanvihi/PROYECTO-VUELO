@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BelViaggio - Vuelos Disponibles</title>
+    <link rel="stylesheet" href="../css/layouts/divs.css"> 
+    <link rel="stylesheet" href="../css/pages/vuelos.css">
+</head>
+
+<body>
+    <script src="../js/vuelos.js"></script>
+</body>
+<body>
+    <header class="header">
+        <div class="header-logo-container">
+            <h1>BelViaggio</h1>
+        </div>
+        <nav>
+            <a href="index.html" class="headerNav-link">Volver al Inicio</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="contenedor-tabla">
+            <h2 style="font-family: 'Chunky', sans-serif; color: #001f3f;">Vuelos Disponibles</h2>
+            <p>Selecciona un vuelo para continuar con tu reserva.</p>
+            
+            <table id="tabla-vuelos">
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>ID Vuelo</th>
+                        <th>Estado</th>
+                        <th>Asientos Disp.</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="../js/vuelos.js"></script>
+</body>
+</html>

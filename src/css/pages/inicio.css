@@ -1,3 +1,6 @@
 @import url('../components/botones.css');
 @import url('../layouts/divs.css');
 @import url('../components/input.css');
+body{
+    overflow: hidden;
+}

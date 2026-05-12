@@ -1,0 +1,81 @@
+/* --- ESTILOS DE LA PÁGINA DE VUELOS --- */
+
+/* Contenedor blanco donde vive la tabla */
+.contenedor-tabla {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    width: 95%;
+    max-width: 1100px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin: 0 auto;
+}
+
+.contenedor-tabla p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'AvantGarde', sans-serif;
+}
+
+th {
+    background-color: #001f3f;
+    color: #ffffff;
+    padding: 15px;
+    text-align: left;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+    color: #333333;
+}
+
+.fila-vuelo {
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.fila-vuelo:hover {
+    background-color: #f8fbff;
+    transform: scale(1.005);
+}
+
+.fila-bloqueada {
+    background-color: #fff5f5;
+    color: #b91c1c;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.fila-bloqueada:hover {
+    background-color: #fff5f5; 
+}
+
+
+.id-vuelo {
+    color: #4cabd3;
+    font-weight: bold;
+}
+
+.asientos-badge {
+    background-color: #e0f2f1;
+    color: #00796b;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.fila-bloqueada .asientos-badge {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}

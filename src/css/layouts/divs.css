@@ -1,67 +1,102 @@
-.seleccionador{
+@import url('../base/tipografia.css');
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; 
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: #ffffff;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 30px;
-    border-radius: 12px;
-    border: 1px solid #eaeaea;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex-direction: column; 
+}
+
+
+.header {
+    background-color: #ffffff; 
+    padding: 15px 30px;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+}
+
+.header-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+}
+
+h1 {
+    font-family: 'Chunky', sans-serif; 
+    font-size: 40px;
+    color: #001f3f; 
+    margin: 0;
+}
+
+.header nav {
+    display: flex;
+    gap: 20px; 
+    align-items: center;
+}
+
+.headerNav-link {
+    font-family: 'AvantGarde', sans-serif;
+    color: #333333; 
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold; 
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.headerNav-link:hover {
+    color: #00b4d8; 
 }
 
 main {
-    min-height: 100vh;
+    flex: 1; 
     display: flex;
     flex-direction: column;
-    background-image: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('fondoBody.png');
+    justify-content: flex-start; 
+    align-items: center;         
+    padding-top: 60px; 
+    padding-bottom: 50px;
+    background-image: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('../../../img/fondoBody.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
 }
 
-.header {
-    background-color: #001f3f;
-    padding: 15px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 40px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+.mainContent {
+    text-align: center;
+    margin-bottom: 30px; 
 }
 
-.header-logo-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.mainContent h2 {
+    font-family: 'Chunky', sans-serif; /* Tu fuente instalada */
+    font-size: 45px;
+    color: #001f3f;
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
-#titulo {
-    font-family: 'CooperBT', serif;
-    font-size: 24px;
-    color: white;
+.mainContent p {
+    font-size: 18px;
+    color: #333333;
     margin: 0;
 }
 
-.headerNav {
+.seleccionador {
     display: flex;
+    flex-direction: column;
     gap: 20px;
-    align-items: center;
-}
-
-.headerNav-link {
-    font-family: 'AvantGarde', sans-serif;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    transition: color 0.3s ease;
-}
-
-.headerNav-link:hover {
-    color: #00b4d8;
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 800px; /* Ancho máximo de la tarjeta */
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
