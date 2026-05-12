@@ -33,10 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let tipoFila = (fila <= 2) ? 'premium' : 'turista';
             let claseEmergencia = (fila === 10) ? ' fila-emergencia' : ''; 
+            
+            let claseExtra = (fila === 22) ? 'no-disponible' : '';
 
             html += `<div class="bloque-izquierdo">`;
             asientosIzq.forEach(letra => {
-                html += `<div class="asiento ${tipoFila}" data-fila="${fila}" data-letra="${letra}">${letra}</div>`;
+                html += `<div class="asiento ${tipoFila} ${claseExtra}" data-fila="${fila}" data-letra="${letra}">${letra}</div>`;
             });
             html += `</div>`;
 
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             html += `<div class="bloque-derecho">`;
             asientosDer.forEach(letra => {
-                let claseExtra = (fila === 22) ? 'no-disponible' : '';
                 html += `<div class="asiento ${tipoFila} ${claseExtra}" data-fila="${fila}" data-letra="${letra}">${letra}</div>`;
             });
             html += `</div>`;
