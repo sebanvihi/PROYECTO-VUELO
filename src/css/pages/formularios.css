@@ -1,0 +1,269 @@
+@import url('../layouts/divs.css');
+@import url('../components/input.css');
+@import url('../components/botones.css');
+
+/* Progreso Header */
+.progreso-reserva {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 30px;
+}
+
+.nodo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.nodo.activo {
+    background-color: #4cabd3;
+    color: white;
+    border-color: #005266;
+    animation: radarPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes radarPulse {
+    0% { box-shadow: 0 0 0 0 rgba(76, 171, 211, 0.6); }
+    100% { box-shadow: 0 0 0 15px rgba(76, 171, 211, 0); }
+}
+
+.linea {
+    width: 30px;
+    height: 2px;
+    background-color: #ccc;
+}
+
+/* Layout Principal */
+.contenido-principal {
+    display: flex;
+    flex: 1;
+    padding: 30px;
+    gap: 30px;
+    background-color: var(--color-body);
+    min-height: calc(100vh - 80px);
+}
+
+main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+aside {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Contenedor Destino */
+.contenedor-destino {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.destino-superior h2 {
+    font-family: 'Chunky', sans-serif;
+    color: #001f3f;
+    margin: 0;
+}
+
+.destino-superior p {
+    margin: 5px 0 0;
+    color: #666;
+}
+
+.destino-inferior {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.hora-salida, .hora-llegada {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.etiqueta-hora {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+}
+
+/* Formularios */
+.contenedor-formulario {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contenedor-formulario.activo {
+    display: flex;
+}
+
+.contenedor-formulario h3 {
+    font-family: 'Chunky', sans-serif;
+    color: #001f3f;
+    margin: 0 0 10px;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-campo label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #4cabd3;
+    outline: none;
+}
+
+.no-activo {
+    display: none !important;
+}
+
+.no-visible {
+    display: none !important;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Radio buttons personalizados ya están en input.css */
+
+/* Barra Navegación Pasajeros */
+.barra-navegacion-pasajeros {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.btn-nav-pasajero {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lista-pasajeros {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 5px 10px;
+}
+
+.nombre-pasajero {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #f2f4f6;
+    white-space: nowrap;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nombre-pasajero.activo {
+    background: #4cabd3;
+    color: white;
+}
+
+/* Aside */
+.contenedor-acuerdos {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.texto-acuerdo {
+    display: none;
+}
+
+.texto-acuerdo.activo {
+    display: block;
+}
+
+.texto-acuerdo p {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.contenedor-botones-formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: auto;
+}
+
+.btn-accion-formulario {
+    background-color: #4cabd3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.btn-accion-formulario:hover {
+    background-color: #2892c3;
+}
+
+.btn-accion-formulario.no-activo {
+    display: none !important;
+}
