@@ -135,11 +135,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const clases = ['club', 'turista'];
 
         clases.forEach(clase => {
-            let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible)`));
+            let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible):not(.ocupado)`));
             
             let disponibles = clase === 'club' ? ((desglose.club || 0) + (desglose.premium || 0)) : (desglose[clase] || 0);
             
-            let asientosAOcupar = asientosClase.length - disponibles;
+            // Restamos los asientos ya asignados a este grupo para no alterar la disponibilidad real
+            let asientosYaAsignados = pasajeros.filter(p => p.clase === clase && p.asiento).length;
+            let asientosAOcupar = (asientosClase.length + asientosYaAsignados) - disponibles;
 
             if (asientosAOcupar > 0) {
                 // Mezclar asientos de la clase
@@ -157,6 +159,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     generarAvion();
+    
+    // Marcar asientos ya asignados por el usuario como ocupados
+    pasajeros.forEach(p => {
+        if (p.asiento) {
+            let fila = p.asiento.slice(0, -1);
+            let letra = p.asiento.slice(-1);
+            let asDiv = document.querySelector(`.asiento[data-fila="${fila}"][data-letra="${letra}"]`);
+            if (asDiv) asDiv.classList.add('ocupado');
+        }
+    });
+
     ocuparAsientosAleatorios();
     renderPasajeros();
 
@@ -220,8 +233,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     btnCerrar.addEventListener('click', function () {
+        let bookingId = sessionStorage.getItem('claveReserva') || Math.random().toString(36).substring(2, 8).toUpperCase();
+        let origen = sessionStorage.getItem('vueloOrigen') || 'CCS';
+        let destino = sessionStorage.getItem('vueloDestino') || 'MAD';
+        let hora = sessionStorage.getItem('vueloHora') || '12:00';
+        let fecha = sessionStorage.getItem('vueloFecha') || new Date().toISOString().split('T')[0];
+        
+        let nuevaReserva = {
+            id: bookingId,
+            origen: origen,
+            destino: destino,
+            hora: hora,
+            fecha: fecha,
+            pasajeros: pasajeros
+        };
+
+        let misVuelos = JSON.parse(localStorage.getItem('misVuelos')) || [];
+        let existingIndex = misVuelos.findIndex(v => v.id === bookingId);
+        if (existingIndex >= 0) {
+            misVuelos[existingIndex] = nuevaReserva;
+        } else {
+            misVuelos.push(nuevaReserva);
+        }
+        localStorage.setItem('misVuelos', JSON.stringify(misVuelos));
+
         modal.close();
-        window.location.href = 'index.html';
+        window.location.href = 'misVuelos.html';
     });
 
     const modalTerminos = document.getElementById('modal-terminos');

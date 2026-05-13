@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BelViaggio - Mis Vuelos</title>
+    <link rel="stylesheet" href="../css/layouts/divs.css">
+    <link rel="stylesheet" href="../css/pages/misVuelos.css">
+    <link rel="icon" type="image/png" href="../../img/logoTab.png">
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo-container">
+            <h1><a href="index.html" style="text-decoration: none; color: inherit;">BelViaggio</a></h1>
+        </div>
+        <nav class="headerNav">
+            <a href="index.html" class="headerNav-link">Inicio</a>
+            <a href="vuelos.html" class="headerNav-link">Vuelos Disponibles</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="contenedor-tabla">
+            <h2 style="font-family: 'Chunky', sans-serif; color: #001f3f; font-size: 40px; margin-bottom: 20px;">Mis Vuelos Reservados</h2>
+            <p style="margin-bottom: 30px;">Aquí puedes ver tus reservas activas y editar tus asientos asignados.</p>
+            <table id="tabla-mis-vuelos">
+                <thead>
+                    <tr>
+                        <th>Clave de Reserva</th>
+                        <th>Ruta</th>
+                        <th>Fecha y Hora</th>
+                        <th>Pasajeros</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla-mis-vuelos">
+                    <!-- Filas generadas dinámicamente -->
+                </tbody>
+            </table>
+            <div id="mensaje-vacio" style="display: none; text-align: center; margin-top: 50px;">
+                <h3 style="font-family: 'Chunky', sans-serif; color: #555;">No tienes vuelos reservados actualmente.</h3>
+                <button onclick="window.location.href='index.html'" class="btn-nueva-reserva">Realizar una reserva</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/misVuelos.js"></script>
+</body>
+</html>
