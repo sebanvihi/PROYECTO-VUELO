@@ -104,6 +104,43 @@
                 <li><strong>Disponibilidad y Estados de Vuelo:</strong> La disponibilidad de rutas, los estados (ej. "Abordando", "En reserva") y la capacidad de los asientos del avión mostrados en la plataforma son generados dinámicamente de forma aleatoria por el algoritmo del sistema y no reflejan inventarios reales de ninguna aerolínea.</li>
                 <li><strong>Propiedad Intelectual:</strong> El diseño de la interfaz, el código fuente (HTML, CSS, JavaScript modular), la lógica de negocio y el nombre "BelViaggio" son propiedad intelectual de sus desarrolladores. Se prohíbe su reproducción comercial sin autorización expresa.</li>
                 <li><strong>Limitación de Responsabilidad:</strong> Los creadores de BelViaggio no se hacen responsables por malentendidos, expectativas de viaje reales, ni por el uso indebido de la plataforma por parte de terceros.</li>
+                <li><strong>Equipaje:</strong> BelViaggio no se hace responsable por la pérdida, robo o extravío de equipaje u objetos personales.</li>
+                <li><strong>Asistencia Especial:</strong> Los pasajeros con discapacidades o necesidades especiales que requieran atención de ayuda deberán comunicarse directamente con los operarios en tierra previo al embarque.</li>
+            </ol>
+        </div>
+    </dialog>
+
+    <dialog id="modal-privacidad" class="modal-legal">
+        <div class="modal-header">
+            <h2 style="font-family: 'Chunky', sans-serif; margin: 0;">Política de Privacidad</h2>
+            <button id="cerrar-privacidad" class="btn-cerrar">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Última actualización: Mayo de 2026</strong></p>
+            <p>En BelViaggio, valoramos la transparencia técnica y la protección de la información. Esta política explica cómo manejamos los datos ingresados durante el proceso de simulación de reserva.</p>
+            <ol class="lista-legal">
+                <li><strong>Información que Recopilamos:</strong> Para ejecutar el flujo de reserva, la interfaz solicita la siguiente información:
+                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                        <li style="margin-bottom: 5px;"><strong>Datos de Identificación:</strong> Nombre, apellido, fecha de nacimiento, sexo y número de documento de identidad oficial.</li>
+                        <li style="margin-bottom: 5px;"><strong>Datos de Contacto:</strong> Correo electrónico y número de teléfono.</li>
+                        <li><strong>Datos de Categoría Especial (Salud):</strong> Información sobre estado de embarazo o requerimientos de asistencia especial (movilidad reducida, discapacidad visual, etc.), solicitada exclusivamente para aplicar validaciones de seguridad en cabina.</li>
+                    </ul>
+                </li>
+                <li><strong>Almacenamiento Local y Efímero:</strong> BelViaggio ha sido diseñado bajo una arquitectura de cliente puro (Front-end). Ningún dato personal, de contacto o médico ingresado en esta plataforma es transmitido, enviado ni guardado en bases de datos externas o servidores remotos.
+                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                        <li style="margin-bottom: 5px;">Toda la información recopilada se almacena exclusivamente en el almacenamiento de sesión (sessionStorage) y local (localStorage) de su propio navegador web.</li>
+                        <li>Una vez que usted borra su reserva o limpia el navegador, la información se destruye de forma automática e irreversible.</li>
+                    </ul>
+                </li>
+                <li><strong>Uso de la Información:</strong> La información ingresada se utiliza de manera instantánea y local para:
+                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                        <li style="margin-bottom: 5px;">Calcular edades exactas y asignar representantes a menores de edad.</li>
+                        <li style="margin-bottom: 5px;">Validar la vigencia de documentos internacionales y aplicar restricciones en el mapa de asientos.</li>
+                        <li>Generar un comprobante de reserva simulado al final del flujo.</li>
+                    </ul>
+                </li>
+                <li><strong>Compartición de Datos:</strong> BelViaggio no tiene la capacidad material ni técnica para vender, transferir, ceder o compartir sus datos con terceros, agencias de gobierno, ni empresas de marketing.</li>
+                <li><strong>Sus Derechos:</strong> Al ser un sistema de almacenamiento local volátil, usted ejerce control total sobre sus datos. Si desea eliminar cualquier información ingresada, simplemente cancele su vuelo en la pestaña de "Mis Vuelos" o borre los datos de su navegador.</li>
             </ol>
         </div>
     </dialog>
