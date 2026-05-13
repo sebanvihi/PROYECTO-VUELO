@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const listadoPasajeros = document.getElementById('lista-pasajeros-actual');
     const btnAsignar = document.getElementById('btn-asignar');
     const btnConfirmar = document.getElementById('btn-confirmar');
+    const btnRegresar = document.getElementById('btn-regresar');
     const modal = document.getElementById('modal-print');
     const btnCerrar = document.getElementById('btn-cerrar-modal');
 
@@ -326,6 +327,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('print-info').innerHTML = info;
         modal.showModal();
     });
+
+    if (btnRegresar) {
+        btnRegresar.addEventListener('click', function () {
+            sessionStorage.setItem('pasajerosData', JSON.stringify(pasajeros));
+            window.location.href = 'formularios.html';
+        });
+    }
 
     btnCerrar.addEventListener('click', function () {
         let bookingId = sessionStorage.getItem('claveReserva') || Math.random().toString(36).substring(2, 8).toUpperCase();
