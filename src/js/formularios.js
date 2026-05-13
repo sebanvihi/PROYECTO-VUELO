@@ -31,6 +31,58 @@ document.addEventListener('DOMContentLoaded', function () {
     fechaNacimiento.max = fechaHoy.toISOString().split("T")[0];
     fechaNacimiento.min = fechaMin.toISOString().split("T")[0];
 
+    function calcularEdadExacta(fechaNacimientoStr, fechaVueloStr) {
+        if (!fechaNacimientoStr) return -1;
+        let partesNac = fechaNacimientoStr.split('-');
+        if (partesNac.length !== 3) return -1;
+        let fechaNac = new Date(partesNac[0], partesNac[1] - 1, partesNac[2]);
+        
+        let fechaVuelo;
+        if (fechaVueloStr) {
+            let partesVuelo = fechaVueloStr.split('-');
+            fechaVuelo = new Date(partesVuelo[0], partesVuelo[1] - 1, partesVuelo[2]);
+        } else {
+            fechaVuelo = new Date();
+        }
+
+        let edad = fechaVuelo.getFullYear() - fechaNac.getFullYear();
+        let m = fechaVuelo.getMonth() - fechaNac.getMonth();
+        if (m < 0 || (m === 0 && fechaVuelo.getDate() < fechaNac.getDate())) edad--;
+        return edad;
+    }
+
+    let storedCorreo = sessionStorage.getItem('contactoCorreo');
+    if (storedCorreo) document.getElementById('correo').value = storedCorreo;
+
+    let storedTelGeneral = sessionStorage.getItem('contactoTelefono');
+    if (storedTelGeneral) {
+        let parts = storedTelGeneral.split(' ');
+        if (parts.length > 1) {
+            document.getElementById('codigo-pais-general').value = parts[0];
+            document.getElementById('numero-telefono-general').value = parts.slice(1).join(' ');
+        } else {
+            document.getElementById('numero-telefono-general').value = storedTelGeneral;
+        }
+    }
+
+    let storedNumPasajeros = sessionStorage.getItem('numPasajeros');
+    if (storedNumPasajeros) {
+        document.getElementById('num-pasajeros').value = storedNumPasajeros;
+    }
+
+    let origenStr = sessionStorage.getItem('vueloOrigen');
+    let destinoStr = sessionStorage.getItem('vueloDestino');
+    let horaStr = sessionStorage.getItem('vueloHora');
+    
+    if (origenStr && destinoStr) {
+        let elRuta = document.getElementById('ruta-vuelo');
+        if (elRuta) elRuta.textContent = `${origenStr} - ${destinoStr}`;
+    }
+    if (horaStr) {
+        let elHora = document.getElementById('hora-salida');
+        if (elHora) elHora.textContent = horaStr;
+    }
+
     function mostrarAlerta(mensaje) {
         const modal = document.getElementById('modal-alerta');
         document.getElementById('mensaje-alerta').textContent = mensaje;
@@ -69,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         pasajerosData[index].embarazo = document.getElementById('emb-si').checked ? 'Si' : 'No';
         pasajerosData[index].asistencia = document.getElementById('asist-si').checked ? document.getElementById('tipo-asistencia').value : 'No';
         pasajerosData[index].representante = document.getElementById('representante').value;
-        pasajerosData[index].telefono = document.getElementById('numero-telefono').value;
+        pasajerosData[index].telefono = document.getElementById('codigo-pais').value + ' ' + document.getElementById('numero-telefono').value;
         pasajerosData[index].clase = document.getElementById('tipo-cabina-especifico').value;
         pasajerosData[index].nacionalidad = document.getElementById('nacionalidad').value;
         pasajerosData[index].tipoDocumento = document.getElementById('tipo-documento').value;
@@ -82,12 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let menor = false;
         let infante = false;
         if (pasajerosData[index].fecha) {
-            let fecha = new Date(pasajerosData[index].fecha);
-            let fechaVueloStr = sessionStorage.getItem('vueloFecha');
-            let hoy = fechaVueloStr ? new Date(fechaVueloStr) : new Date();
-            let edad = hoy.getFullYear() - fecha.getFullYear();
-            let m = hoy.getMonth() - fecha.getMonth();
-            if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
+            let edad = calcularEdadExacta(pasajerosData[index].fecha, sessionStorage.getItem('vueloFecha'));
             menor = (edad < 18);
             infante = (edad < 2);
         }
@@ -124,7 +171,15 @@ document.addEventListener('DOMContentLoaded', function () {
             campoAsistencia.classList.add('no-visible');
         }
 
-        document.getElementById('numero-telefono').value = pasajerosData[index].telefono;
+        let telString = pasajerosData[index].telefono || '';
+        let telParts = telString.split(' ');
+        if (telParts.length > 1) {
+            document.getElementById('codigo-pais').value = telParts[0];
+            document.getElementById('numero-telefono').value = telParts.slice(1).join(' ');
+        } else {
+            document.getElementById('numero-telefono').value = telString;
+        }
+
         document.getElementById('tipo-cabina-especifico').value = pasajerosData[index].clase || 'turista';
         document.getElementById('nacionalidad').value = pasajerosData[index].nacionalidad || 'Venezolano';
         document.getElementById('tipo-documento').value = pasajerosData[index].tipoDocumento || 'Pasaporte';
@@ -179,11 +234,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!correo) { mostrarAlerta('Complete el campo de correo de contacto.'); return; }
         if (!emailRegex.test(correo)) { mostrarAlerta('Por favor, ingrese un correo electrónico válido.'); return; }
 
-        let telGeneral = document.getElementById('numero-telefono-general').value.replace(/\s+/g, '');
+        let telGeneralCompleto = document.getElementById('codigo-pais-general').value + ' ' + document.getElementById('numero-telefono-general').value;
+        let telGeneral = telGeneralCompleto.replace(/[\s+]/g, '');
         if (!/^\d{7,15}$/.test(telGeneral)) {
             mostrarAlerta('El número de teléfono general debe contener entre 7 y 15 dígitos.');
             return;
         }
+
+        sessionStorage.setItem('contactoCorreo', correo);
+        sessionStorage.setItem('contactoTelefono', telGeneralCompleto);
+        sessionStorage.setItem('numPasajeros', numPasajerosSelect.value);
 
         nodo1.classList.remove('activo');
         nodo2.classList.add('activo');
@@ -213,29 +273,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
         generarListaPasajeros(numPasajerosSelect.value);
 
-        pasajerosData = [];
-        for (let i = 0; i < totalPasajeros; i++) {
-            pasajerosData.push({
-                nombre: '',
-                apellido: '',
-                fecha: '',
-                sexo: '',
-                embarazo: 'No',
-                asistencia: 'No',
-                representante: '',
-                telefono: '',
-                menor: false,
-                clase: 'turista',
-                nacionalidad: 'Venezolano',
-                tipoDocumento: 'Pasaporte',
-                numeroDocumento: '',
-                paisEmisor: 'Venezuela',
-                vencimientoDocumento: '',
-                certificadoEmbarazo: false,
-                infante: false,
-                infanteAsiento: 'regazo',
-                asiento: null
-            });
+        if (pasajerosData.length !== totalPasajeros) {
+            let dataPrevia = sessionStorage.getItem('pasajerosData');
+            let arrayPrevio = dataPrevia ? JSON.parse(dataPrevia) : [];
+            let nuevosPasajeros = [];
+            
+            for (let i = 0; i < totalPasajeros; i++) {
+                if (pasajerosData[i]) {
+                    nuevosPasajeros.push(pasajerosData[i]);
+                } else if (arrayPrevio[i]) {
+                    nuevosPasajeros.push(arrayPrevio[i]);
+                } else {
+                    nuevosPasajeros.push({
+                        nombre: '',
+                        apellido: '',
+                        fecha: '',
+                        sexo: '',
+                        embarazo: 'No',
+                        asistencia: 'No',
+                        representante: '',
+                        telefono: '',
+                        menor: false,
+                        clase: 'turista',
+                        nacionalidad: 'Venezolano',
+                        tipoDocumento: 'Pasaporte',
+                        numeroDocumento: '',
+                        paisEmisor: 'Venezuela',
+                        vencimientoDocumento: '',
+                        certificadoEmbarazo: false,
+                        infante: false,
+                        infanteAsiento: 'regazo',
+                        asiento: null
+                    });
+                }
+            }
+            pasajerosData = nuevosPasajeros;
         }
         pasajeroActual = 0;
         cargarPasajeroForm(0);
@@ -272,10 +344,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let todosMenores = true;
         let documentosVistos = new Set();
+        let regazoPorAdulto = {};
 
         for (let i = 0; i < pasajerosData.length; i++) {
+            pasajerosData[i].nombre = pasajerosData[i].nombre.trim();
+            pasajerosData[i].apellido = pasajerosData[i].apellido.trim();
+
             if (!pasajerosData[i].nombre || !pasajerosData[i].apellido || !pasajerosData[i].fecha) {
                 mostrarAlerta(`Complete los campos obligatorios del Pasajero ${i + 1}`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            let edadExacta = calcularEdadExacta(pasajerosData[i].fecha, sessionStorage.getItem('vueloFecha'));
+            if (edadExacta < 0 || edadExacta > 120) {
+                mostrarAlerta(`La fecha de nacimiento del Pasajero ${i + 1} es inválida. No puede ser mayor a la fecha del vuelo ni superar los 120 años.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
@@ -323,11 +406,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 let limiteDate = new Date(vueloDate);
                 limiteDate.setMonth(limiteDate.getMonth() + 6);
 
-                let vencimientoDate = new Date(pasajerosData[i].vencimientoDocumento);
-                if (vencimientoDate < limiteDate) {
-                    mostrarAlerta(`Para vuelos internacionales, el documento del Pasajero ${i + 1} debe tener una vigencia de al menos 6 meses posteriores a la fecha del vuelo.`);
-                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
-                    return;
+                if (pasajerosData[i].vencimientoDocumento && pasajerosData[i].vencimientoDocumento.trim() !== '') {
+                    let vencimientoDate = new Date(pasajerosData[i].vencimientoDocumento);
+                    if (vencimientoDate < limiteDate) {
+                        mostrarAlerta(`Para vuelos internacionales, el documento del Pasajero ${i + 1} debe tener una vigencia de al menos 6 meses posteriores a la fecha del vuelo.`);
+                        document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                        return;
+                    }
                 }
             }
 
@@ -337,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            let telObj = pasajerosData[i].telefono.replace(/\s+/g, '');
+            let telObj = pasajerosData[i].telefono.replace(/[\s+]/g, '');
             if (!/^\d{7,15}$/.test(telObj)) {
                 mostrarAlerta(`El número de teléfono del Pasajero ${i + 1} debe contener entre 7 y 15 dígitos.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
@@ -346,11 +431,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!pasajerosData[i].menor) todosMenores = false;
 
-            if (pasajerosData[i].menor && !pasajerosData[i].representante) {
-                let msj = pasajerosData[i].infante ? `El Pasajero ${i + 1} es un infante menor de 2 años y estrictamente debe tener un representante asignado.` : `El Pasajero ${i + 1} es menor de edad y debe tener un representante asignado.`;
-                mostrarAlerta(msj);
-                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
-                return;
+            if (pasajerosData[i].menor) {
+                if (!pasajerosData[i].representante) {
+                    let msj = pasajerosData[i].infante ? `El Pasajero ${i + 1} es un infante menor de 2 años y estrictamente debe tener un representante asignado.` : `El Pasajero ${i + 1} es menor de edad y debe tener un representante asignado.`;
+                    mostrarAlerta(msj);
+                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                    return;
+                } else {
+                    let repreValido = pasajerosData.some(p => !p.menor && (`${p.nombre.trim()} ${p.apellido.trim()}` === pasajerosData[i].representante.trim()));
+                    if (!repreValido) {
+                        mostrarAlerta(`El representante asignado al Pasajero ${i + 1} ya no es válido o ha cambiado de nombre. Por favor, reasígnelo.`);
+                        document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                        return;
+                    }
+                }
+            }
+
+            if (pasajerosData[i].infante && pasajerosData[i].infanteAsiento === 'regazo') {
+                let repName = pasajerosData[i].representante.trim();
+                regazoPorAdulto[repName] = (regazoPorAdulto[repName] || 0) + 1;
+                
+                if (regazoPorAdulto[repName] > 1) {
+                    mostrarAlerta(`Normativa Aeronáutica: El representante "${repName}" tiene asignado más de un infante en regazo. Cada adulto solo puede llevar a un (1) infante en su regazo. Si viaja con otro bebé, debe elegir "Asiento propio".`);
+                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                    return;
+                }
             }
 
             if (!pasajerosData[i].infante || pasajerosData[i].infanteAsiento === 'asiento') {
@@ -385,16 +490,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- Lógica condicional ---
     fechaNacimiento.addEventListener('input', function () {
-        let fecha = new Date(this.value);
-        if (isNaN(fecha.getTime())) {
+        let edad = calcularEdadExacta(this.value, sessionStorage.getItem('vueloFecha'));
+        if (edad === -1 || isNaN(edad)) {
             campoRepresentante.classList.add('no-visible');
             return;
         }
-        let fechaVueloStr = sessionStorage.getItem('vueloFecha');
-        let hoy = fechaVueloStr ? new Date(fechaVueloStr) : new Date();
-        let edad = hoy.getFullYear() - fecha.getFullYear();
-        let m = hoy.getMonth() - fecha.getMonth();
-        if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
         
         if (edad < 18) campoRepresentante.classList.remove('no-visible');
         else campoRepresentante.classList.add('no-visible');

@@ -142,6 +142,7 @@ function renderizarTabla(vuelos, cuerpoTabla) {
                 sessionStorage.setItem('desgloseAsientos', JSON.stringify(vuelo.desglose));
                 sessionStorage.setItem('vueloId', vuelo.id);
                 sessionStorage.setItem('vueloFecha', vuelo.fechaHora.split(' | ')[0]);
+                sessionStorage.setItem('vueloHora', vuelo.fechaHora.split(' | ')[1]);
                 sessionStorage.setItem('vueloOrigen', vuelo.origen);
                 sessionStorage.setItem('vueloDestino', vuelo.destino);
                 window.location.href = 'formularios.html';

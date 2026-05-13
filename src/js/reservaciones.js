@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('modal-alerta');
         document.getElementById('mensaje-alerta').textContent = mensaje;
         modal.showModal();
-        
+
         document.getElementById('cerrar-alerta').onclick = () => modal.close();
         document.getElementById('btn-entendido-alerta').onclick = () => modal.close();
     }
@@ -132,21 +132,21 @@ document.addEventListener('DOMContentLoaded', function () {
         let desgloseStr = sessionStorage.getItem('desgloseAsientos');
         if (!desgloseStr) return;
         let desglose = JSON.parse(desgloseStr);
-        
+
         const clases = ['club', 'premium', 'turista'];
-        
+
         clases.forEach(clase => {
             let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible)`));
             let disponibles = desglose[clase] || 0;
             let asientosAOcupar = asientosClase.length - disponibles;
-            
+
             if (asientosAOcupar > 0) {
                 // Mezclar asientos de la clase
                 for (let i = asientosClase.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [asientosClase[i], asientosClase[j]] = [asientosClase[j], asientosClase[i]];
                 }
-                
+
                 // Ocupar los primeros N
                 for (let i = 0; i < asientosAOcupar; i++) {
                     asientosClase[i].classList.add('ocupado');
@@ -221,12 +221,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnTerminos = document.getElementById('terminos');
     const btnCerrarTerminos = document.getElementById('cerrar-terminos');
 
-    if(btnTerminos && modalTerminos) {
+    if (btnTerminos && modalTerminos) {
         btnTerminos.addEventListener('click', (e) => {
             e.preventDefault();
             modalTerminos.showModal();
         });
-        if(btnCerrarTerminos) {
+        if (btnCerrarTerminos) {
             btnCerrarTerminos.addEventListener('click', () => {
                 modalTerminos.close();
             });
