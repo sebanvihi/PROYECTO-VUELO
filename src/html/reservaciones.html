@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <link rel="stylesheet" href="../css/layouts/divs.css">
     <link rel="stylesheet" href="../css/components/botones.css">
     <link rel="stylesheet" href="../css/pages/reservaciones.css">
+    <link rel="icon" type="image/png" href="../../img/logoTab.png">
 </head>
+
 <body>
     <header class="header">
         <div class="header-logo-container">
@@ -51,12 +54,12 @@
                     <div><span class="color-amarillo"></span> Emergencia</div>
                     <div><span class="color-rojo"></span> Ocupado</div>
                 </div>
-                
+
                 <div class="avion-scroll">
                     <div class="silueta-avion">
                         <div class="nariz-avion"></div>
                         <div id="mapa-asientos" class="mapa-asientos">
-                            </div>
+                        </div>
                         <div class="cola-avion"></div>
                     </div>
                 </div>
@@ -93,11 +96,16 @@
         <div class="modal-body">
             <p>Bienvenido a BelViaggio. Al utilizar nuestro sistema de reservas, aceptas los siguientes términos:</p>
             <ol class="lista-legal">
-                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y simulación de reservas de vuelos comerciales.</li>
-                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos y verdaderos al momento de realizar cualquier reserva.</li>
-                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a la disponibilidad del sistema en tiempo real.</li>
-                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
-                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están protegidos y son de uso exclusivo de sus creadores.</li>
+                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y
+                    simulación de reservas de vuelos comerciales.</li>
+                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos
+                    y verdaderos al momento de realizar cualquier reserva.</li>
+                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a
+                    la disponibilidad del sistema en tiempo real.</li>
+                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado
+                    dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
+                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están
+                    protegidos y son de uso exclusivo de sus creadores.</li>
             </ol>
         </div>
     </dialog>
@@ -109,7 +117,8 @@
         </div>
         <div class="modal-body" style="text-align: center;">
             <p id="mensaje-alerta" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
-            <button id="btn-entendido-alerta" class="btn-accion" style="display: inline-flex; width: auto; padding: 10px 20px;">Entendido</button>
+            <button id="btn-entendido-alerta" class="btn-accion"
+                style="display: inline-flex; width: auto; padding: 10px 20px;">Entendido</button>
         </div>
     </dialog>
 
@@ -120,11 +129,13 @@
         <div class="modal-body">
             <div id="print-info" style="max-height: 400px; overflow-y: auto; padding: 10px;"></div>
             <div style="text-align: center; margin-top: 20px;">
-                <button id="btn-cerrar-modal" class="btn-accion" style="width: auto; padding: 10px 30px;">Finalizar</button>
+                <button id="btn-cerrar-modal" class="btn-accion"
+                    style="width: auto; padding: 10px 30px;">Finalizar</button>
             </div>
         </div>
     </dialog>
 
     <script src="../js/reservaciones.js"></script>
 </body>
+
 </html>

@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BelViaggio - Inicio</title>
     <link rel="stylesheet" href="../css/pages/inicio.css">
+    <link rel="icon" type="image/png" href="../../img/logoTab.png">
+
 </head>
+
 <body>
     <header class="header">
         <h1 class="header-title"><a href="index.html" style="text-decoration: none; color: inherit;">BelViaggio</a></h1>
-        
+
         <nav class="headerNav">
             <a href="#" id="terminos" class="headerNav-link">Terminos y Condiciones</a>
             <a href="#" id="privacidad" class="headerNav-link">Política de Privacidad</a>
@@ -21,14 +25,14 @@
             <h2>Bienvenido a BelViaggio</h2>
             <p>Explora los mejores destinos turísticos con BelViaggio.</p>
         </div>
-        
+
         <div class="seleccionador">
             <div class="radio-group">
                 <div class="grupo-ida">
                     <input type="radio" id="ida" name="tipoViaje">
                     <label for="ida">IDA</label>
                 </div>
-                <div class="grupo-vuelta"> 
+                <div class="grupo-vuelta">
                     <input type="radio" id="vuelta" name="tipoViaje" checked>
                     <label for="vuelta">IDA Y VUELTA</label>
                 </div>
@@ -51,7 +55,7 @@
                         <option value="Lima">Lima</option>
                     </select>
                 </div>
-                
+
                 <div class="input-grupo">
                     <label for="destino">Destino</label>
                     <select id="destino">
@@ -75,7 +79,7 @@
             </div>
         </div>
 
-    </main> 
+    </main>
     <script src="../js/index.js"></script>
     <dialog id="modal-terminos" class="modal-legal">
         <div class="modal-header">
@@ -85,11 +89,16 @@
         <div class="modal-body">
             <p>Bienvenido a BelViaggio. Al utilizar nuestro sistema de reservas, aceptas los siguientes términos:</p>
             <ol class="lista-legal">
-                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y simulación de reservas de vuelos comerciales.</li>
-                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos y verdaderos al momento de realizar cualquier reserva.</li>
-                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a la disponibilidad del sistema en tiempo real.</li>
-                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
-                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están protegidos y son de uso exclusivo de sus creadores.</li>
+                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y
+                    simulación de reservas de vuelos comerciales.</li>
+                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos
+                    y verdaderos al momento de realizar cualquier reserva.</li>
+                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a
+                    la disponibilidad del sistema en tiempo real.</li>
+                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado
+                    dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
+                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están
+                    protegidos y son de uso exclusivo de sus creadores.</li>
             </ol>
         </div>
     </dialog>
@@ -101,8 +110,10 @@
         </div>
         <div class="modal-body" style="text-align: center;">
             <p id="mensaje-alerta" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
-            <button id="btn-entendido-alerta" class="reservar" style="display: inline-flex; width: auto; padding: 10px 20px;">Entendido</button>
+            <button id="btn-entendido-alerta" class="reservar"
+                style="display: inline-flex; width: auto; padding: 10px 20px;">Entendido</button>
         </div>
     </dialog>
 </body>
+
 </html>
