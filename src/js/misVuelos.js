@@ -60,4 +60,46 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    const btnPrivacidad = document.getElementById('privacidad');
+    const modalPrivacidad = document.getElementById('modal-privacidad');
+    const btnCerrarPrivacidad = document.getElementById('cerrar-privacidad');
+
+    if (btnPrivacidad && modalPrivacidad) {
+        btnPrivacidad.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalPrivacidad.showModal();
+        });
+        if (btnCerrarPrivacidad) {
+            btnCerrarPrivacidad.addEventListener('click', () => {
+                modalPrivacidad.close();
+            });
+        }
+        modalPrivacidad.addEventListener('click', (e) => {
+            if (e.target === modalPrivacidad) {
+                modalPrivacidad.close();
+            }
+        });
+    }
+
+    const btnTerminos = document.getElementById('terminos');
+    const modalTerminos = document.getElementById('modal-terminos');
+    const btnCerrarTerminos = document.getElementById('cerrar-terminos');
+
+    if (btnTerminos && modalTerminos) {
+        btnTerminos.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalTerminos.showModal();
+        });
+        if (btnCerrarTerminos) {
+            btnCerrarTerminos.addEventListener('click', () => {
+                modalTerminos.close();
+            });
+        }
+        modalTerminos.addEventListener('click', (e) => {
+            if (e.target === modalTerminos) {
+                modalTerminos.close();
+            }
+        });
+    }
 });

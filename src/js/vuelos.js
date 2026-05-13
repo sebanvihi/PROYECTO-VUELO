@@ -163,4 +163,25 @@ function renderizarTabla(vuelos, cuerpoTabla) {
 document.addEventListener('DOMContentLoaded', () => {
     if (!document.querySelector('.contenedor-tabla')) return;
     cargarPagina();
+
+    const btnPrivacidad = document.getElementById('privacidad');
+    const modalPrivacidad = document.getElementById('modal-privacidad');
+    const btnCerrarPrivacidad = document.getElementById('cerrar-privacidad');
+
+    if (btnPrivacidad && modalPrivacidad) {
+        btnPrivacidad.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalPrivacidad.showModal();
+        });
+        if (btnCerrarPrivacidad) {
+            btnCerrarPrivacidad.addEventListener('click', () => {
+                modalPrivacidad.close();
+            });
+        }
+        modalPrivacidad.addEventListener('click', (e) => {
+            if (e.target === modalPrivacidad) {
+                modalPrivacidad.close();
+            }
+        });
+    }
 });

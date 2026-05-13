@@ -595,4 +595,25 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('numero-documento').addEventListener('input', function (e) {
         this.value = this.value.replace(/[^\d]/g, '');
     });
+
+    const btnPrivacidad = document.getElementById('privacidad');
+    const modalPrivacidad = document.getElementById('modal-privacidad');
+    const btnCerrarPrivacidad = document.getElementById('cerrar-privacidad');
+
+    if (btnPrivacidad && modalPrivacidad) {
+        btnPrivacidad.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalPrivacidad.showModal();
+        });
+        if (btnCerrarPrivacidad) {
+            btnCerrarPrivacidad.addEventListener('click', () => {
+                modalPrivacidad.close();
+            });
+        }
+        modalPrivacidad.addEventListener('click', (e) => {
+            if (e.target === modalPrivacidad) {
+                modalPrivacidad.close();
+            }
+        });
+    }
 });
