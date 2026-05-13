@@ -100,23 +100,21 @@ function crearObjetoVuelo(origen, destino) {
     }
 
     let maxClub = 8;
-    let maxPremium = 48;
-    let maxTurista = 69;
-    let dispClub = 0, dispPremium = 0, dispTurista = 0;
+    let maxTurista = 117;
+    let dispClub = 0, dispTurista = 0;
 
     if (asientosDisponibles > 0) {
         let restantes = asientosDisponibles;
         while (restantes > 0) {
             let r = Math.random();
             if (r < 0.1 && dispClub < maxClub) { dispClub++; restantes--; }
-            else if (r < 0.4 && dispPremium < maxPremium) { dispPremium++; restantes--; }
             else if (dispTurista < maxTurista) { dispTurista++; restantes--; }
-            else if (dispPremium < maxPremium) { dispPremium++; restantes--; }
             else if (dispClub < maxClub) { dispClub++; restantes--; }
+            else { break; } // Por si acaso
         }
     }
 
-    let desgloseAsientos = { club: dispClub, premium: dispPremium, turista: dispTurista };
+    let desgloseAsientos = { club: dispClub, turista: dispTurista };
 
     return {
         fechaHora: `${fecha.toISOString().split('T')[0]} | ${hora}:${minuto}H`,
@@ -138,6 +136,7 @@ function renderizarTabla(vuelos, cuerpoTabla) {
         } else {
             fila.classList.add('fila-vuelo');
             fila.addEventListener('click', () => {
+                sessionStorage.clear();
                 sessionStorage.setItem('asientosDisponibles', vuelo.asientos);
                 sessionStorage.setItem('desgloseAsientos', JSON.stringify(vuelo.desglose));
                 sessionStorage.setItem('vueloId', vuelo.id);

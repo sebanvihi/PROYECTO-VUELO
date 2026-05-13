@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let reserva = misVuelos.find(v => v.id === bookingId);
             if (reserva) {
                 // Cargar datos en sessionStorage para el módulo de reservaciones
+                sessionStorage.clear();
                 sessionStorage.setItem('claveReserva', reserva.id);
                 sessionStorage.setItem('vueloOrigen', reserva.origen);
                 sessionStorage.setItem('vueloDestino', reserva.destino);

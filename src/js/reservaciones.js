@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnCerrar = document.getElementById('btn-cerrar-modal');
 
     let asientoSeleccionado = null;
-    let pasajeroActivo = 0;
-
     let pasajeros = [];
     const datosGuardados = sessionStorage.getItem('pasajerosData');
     if (datosGuardados) {
@@ -21,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
             { nombre: 'Carlos', apellido: 'López', sexo: 'Masculino', fecha: '2015-06-12', asiento: null, asistencia: 'No', embarazo: 'No', menor: true, representante: 'Luis Pérez', clase: 'turista' }
         ];
     }
+
+    let pasajeroActivo = pasajeros.findIndex(p => !(p.infante && p.infanteAsiento === 'regazo'));
+    if (pasajeroActivo === -1) pasajeroActivo = 0;
 
     function mostrarAlerta(mensaje) {
         const modal = document.getElementById('modal-alerta');
@@ -99,6 +100,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderPasajeros() {
         listadoPasajeros.innerHTML = '';
         pasajeros.forEach((p, index) => {
+            if (p.infante && p.infanteAsiento === 'regazo') {
+                p.asiento = 'Regazo';
+                return;
+            }
+
             let div = document.createElement('div');
             div.className = `item-pasajero ${index === pasajeroActivo ? 'activo' : ''}`;
             div.dataset.index = index;
@@ -149,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         clases.forEach(clase => {
             let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible):not(.ocupado)`));
             
-            let disponibles = clase === 'club' ? ((desglose.club || 0) + (desglose.premium || 0)) : (desglose[clase] || 0);
+            let disponibles = clase === 'turista' ? ((desglose.turista || 0) + (desglose.premium || 0)) : (desglose[clase] || 0);
             
             // Restamos los asientos ya asignados a este grupo para no alterar la disponibilidad real
             let asientosYaAsignados = pasajeros.filter(p => p.clase === clase && p.asiento).length;
@@ -197,11 +203,81 @@ document.addEventListener('DOMContentLoaded', function () {
     mapaAsientos.addEventListener('click', function (e) {
         if (e.target.classList.contains('asiento') && !e.target.classList.contains('ocupado') && !e.target.classList.contains('no-disponible')) {
             let claseAsiento = e.target.dataset.clase;
+            let filaSeleccionada = e.target.dataset.fila;
+            let letraSeleccionada = e.target.dataset.letra;
             let pasajero = pasajeros[pasajeroActivo];
-            if (pasajero && pasajero.clase && pasajero.clase !== claseAsiento) {
+            
+            if (!pasajero) return;
+
+            if (pasajero.clase && pasajero.clase !== claseAsiento) {
                 mostrarAlerta(`Este asiento es de clase ${claseAsiento}, pero tu reserva es de clase ${pasajero.clase}.`);
                 return;
             }
+
+            if (pasajero.asistencia === 'Movilidad reducida' && (letraSeleccionada === 'C' || letraSeleccionada === 'D')) {
+                mostrarAlerta('Por normativas de seguridad, los pasajeros con movilidad reducida deben ir obligatoriamente en un asiento de ventanilla (A o F), no en pasillo.');
+                return;
+            }
+
+            let esEmergencia = e.target.classList.contains('emergencia');
+            if (esEmergencia) {
+                let todayStr = sessionStorage.getItem('vueloFecha') || new Date().toISOString().split("T")[0];
+                let today = new Date(todayStr);
+                let birthDate = new Date(pasajero.fecha);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                if (pasajero.menor) {
+                    mostrarAlerta('Normativa de seguridad: Los menores de edad no pueden sentarse en salidas de emergencia.');
+                    return;
+                }
+                if (age >= 60) {
+                    mostrarAlerta('Normativa de seguridad: Las personas de 3era edad no pueden sentarse en salidas de emergencia.');
+                    return;
+                }
+                if (pasajero.asistencia && pasajero.asistencia !== 'Ninguna' && pasajero.asistencia !== 'No') {
+                    mostrarAlerta('Normativa de seguridad: Pasajeros con discapacidad o asistencia especial no pueden sentarse en salidas de emergencia.');
+                    return;
+                }
+            }
+
+            function esAdyacente(fila1, letra1, fila2, letra2) {
+                if (fila1 !== fila2) return false;
+                const adyacencias = ['AB', 'BC', 'DE', 'EF', 'AC', 'DF'];
+                const par = letra1 + letra2;
+                const parRev = letra2 + letra1;
+                return adyacencias.includes(par) || adyacencias.includes(parRev);
+            }
+
+            if (pasajero.menor && pasajero.representante) {
+                let repFullName = pasajero.representante.trim();
+                let repObj = pasajeros.find(p => `${p.nombre.trim()} ${p.apellido.trim()}` === repFullName);
+                if (repObj && repObj.asiento) {
+                    let repFila = repObj.asiento.slice(0, -1);
+                    let repLetra = repObj.asiento.slice(-1);
+                    if (!esAdyacente(filaSeleccionada, letraSeleccionada, repFila, repLetra)) {
+                        mostrarAlerta(`Normativa de vuelo: El menor debe sentarse en un asiento adyacente a su representante (${repFullName}, asiento ${repObj.asiento}).`);
+                        return;
+                    }
+                }
+            }
+
+            let minors = pasajeros.filter(p => p.menor && p.representante && p.representante.trim() === `${pasajero.nombre.trim()} ${pasajero.apellido.trim()}`);
+            let minorsSeated = minors.filter(m => m.asiento);
+            if (minorsSeated.length > 0) {
+                for (let minor of minorsSeated) {
+                    let minFila = minor.asiento.slice(0, -1);
+                    let minLetra = minor.asiento.slice(-1);
+                    if (!esAdyacente(filaSeleccionada, letraSeleccionada, minFila, minLetra)) {
+                        mostrarAlerta(`Normativa de vuelo: Debe sentarse en un asiento adyacente a su representado ya asignado (${minor.nombre} ${minor.apellido}, asiento ${minor.asiento}).`);
+                        return;
+                    }
+                }
+            }
+
             document.querySelectorAll('.asiento.seleccionado').forEach(el => el.classList.remove('seleccionado'));
             e.target.classList.add('seleccionado');
             asientoSeleccionado = e.target.dataset;
@@ -240,7 +316,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         let info = `<p><strong>Vuelo:</strong> CCS // MAD</p><p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p><hr>`;
         pasajeros.forEach((p, i) => {
-            info += `<p><strong>#${i + 1}:</strong> ${p.nombre} ${p.apellido} | Asiento: <strong>${p.asiento}</strong></p>`;
+            if (p.infante && p.infanteAsiento === 'regazo') {
+                info += `<p><strong>#${i + 1}:</strong> ${p.nombre} ${p.apellido} | Asiento: <strong>Regazo de ${p.representante}</strong></p>`;
+            } else {
+                info += `<p><strong>#${i + 1}:</strong> ${p.nombre} ${p.apellido} | Asiento: <strong>${p.asiento}</strong></p>`;
+            }
             info += `<hr>`;
         });
         document.getElementById('print-info').innerHTML = info;
@@ -273,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         localStorage.setItem('misVuelos', JSON.stringify(misVuelos));
 
+        sessionStorage.clear();
         modal.close();
         window.location.href = 'misVuelos.html';
     });

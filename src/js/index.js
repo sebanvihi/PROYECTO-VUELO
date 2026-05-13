@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        sessionStorage.clear();
         window.location.href = `vuelos.html?origen=${encodeURIComponent(origen)}&destino=${encodeURIComponent(destino)}`;
     });
 
