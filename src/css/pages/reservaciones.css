@@ -1,9 +1,61 @@
 @import url('../layouts/divs.css');
 @import url('../components/botones.css');
 
+/* Progreso Header */
+.progreso-reserva {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nodo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.nodo.activo {
+    background-color: #4cabd3;
+    color: white;
+    border-color: #005266;
+    animation: radarPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes radarPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(76, 171, 211, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 0 0 15px rgba(76, 171, 211, 0);
+    }
+}
+
+.linea {
+    width: 30px;
+    height: 2px;
+    background-color: #ccc;
+}
+
 body {
     overflow: hidden;
     height: 100vh;
+}
+
+main {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('../../../img/fondoBackgroundReserva.png');
 }
 
 .contenido-principal {
