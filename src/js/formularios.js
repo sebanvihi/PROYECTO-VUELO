@@ -239,16 +239,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        let claveReserva = document.getElementById('clave-reserva').value;
-        if (!claveReserva || claveReserva.trim().length === 0) {
-            mostrarAlerta('Por favor, ingrese una clave de reserva.');
-            return;
-        }
-
         sessionStorage.setItem('contactoCorreo', correo);
         sessionStorage.setItem('contactoTelefono', telGeneralCompleto);
         sessionStorage.setItem('numPasajeros', numPasajerosSelect.value);
-        sessionStorage.setItem('claveReserva', claveReserva);
 
         nodo1.classList.remove('activo');
         nodo2.classList.add('activo');

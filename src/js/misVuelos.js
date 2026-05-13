@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let numPasajeros = vuelo.pasajeros ? vuelo.pasajeros.length : 0;
         
         tr.innerHTML = `
-            <td><strong>${vuelo.id}</strong></td>
             <td>${vuelo.origen} - ${vuelo.destino}</td>
             <td>${vuelo.fecha} | ${vuelo.hora}</td>
             <td>${numPasajeros} pasajero(s)</td>
-            <td>
+            <td style="display: flex; gap: 10px;">
                 <button class="btn-editar" data-id="${vuelo.id}">Editar Asientos</button>
+                <button class="btn-cancelar" data-id="${vuelo.id}" style="background-color: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;">Cancelar</button>
             </td>
         `;
         tablaCuerpo.appendChild(tr);
@@ -40,9 +40,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 sessionStorage.setItem('vueloHora', reserva.hora);
                 sessionStorage.setItem('vueloFecha', reserva.fecha);
                 sessionStorage.setItem('pasajerosData', JSON.stringify(reserva.pasajeros));
+                if (reserva.asientosAleatorios) {
+                    sessionStorage.setItem('asientosAleatorios', JSON.stringify(reserva.asientosAleatorios));
+                }
                 
                 // Redirigir a editar asientos
                 window.location.href = 'reservaciones.html';
+            }
+        });
+    });
+
+    document.querySelectorAll('.btn-cancelar').forEach(btn => {
+        btn.addEventListener('click', function () {
+            let bookingId = this.dataset.id;
+            if (confirm("¿Estás seguro de que deseas cancelar este vuelo? Esta acción no se puede deshacer.")) {
+                let misVuelosActualizados = misVuelos.filter(v => v.id !== bookingId);
+                localStorage.setItem('misVuelos', JSON.stringify(misVuelosActualizados));
+                window.location.reload();
             }
         });
     });

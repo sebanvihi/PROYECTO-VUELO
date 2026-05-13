@@ -181,11 +181,18 @@ main {
     width: 100%;
 }
 
-.bloque-izquierdo,
+.bloque-izquierdo {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .bloque-derecho {
     display: flex;
     gap: 6px;
     flex: 1;
+    justify-content: flex-start;
 }
 
 .num-fila {

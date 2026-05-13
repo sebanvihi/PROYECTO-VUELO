@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         for (let fila = 1; fila <= 22; fila++) {
 
-            if (fila === 1) html += generarFlechas();
+            if (fila === 3) html += generarFlechas();
 
             let claseSeparacion = '';
             if (fila === 3) {
@@ -64,8 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let asientosIzq = esClub ? ['A', 'C'] : ['A', 'B', 'C'];
             let asientosDer = esClub ? ['D', 'F'] : ['D', 'E', 'F'];
 
-            let tipoCabina = 'turista';
-            if (fila <= 10) tipoCabina = 'club';
+            let tipoCabina = esClub ? 'club' : 'turista';
 
             html += `<div class="fila-avion${claseSeparacion}">`;
 
@@ -128,11 +127,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function ocuparAsientosAleatorios() {
+        let estadoGuardado = sessionStorage.getItem('asientosAleatorios');
+        if (estadoGuardado) {
+            let ocupados = JSON.parse(estadoGuardado);
+            ocupados.forEach(asiento => {
+                let fila = asiento.slice(0, -1);
+                let letra = asiento.slice(-1);
+                let el = document.querySelector(`.asiento[data-fila="${fila}"][data-letra="${letra}"]`);
+                if (el) el.classList.add('ocupado');
+            });
+            return;
+        }
+
         let desgloseStr = sessionStorage.getItem('desgloseAsientos');
         if (!desgloseStr) return;
         let desglose = JSON.parse(desgloseStr);
 
         const clases = ['club', 'turista'];
+        let ocupadosNuevos = [];
 
         clases.forEach(clase => {
             let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible):not(.ocupado)`));
@@ -153,9 +165,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Ocupar los primeros N
                 for (let i = 0; i < asientosAOcupar; i++) {
                     asientosClase[i].classList.add('ocupado');
+                    ocupadosNuevos.push(asientosClase[i].dataset.fila + asientosClase[i].dataset.letra);
                 }
             }
         });
+        
+        sessionStorage.setItem('asientosAleatorios', JSON.stringify(ocupadosNuevos));
     }
 
     generarAvion();
@@ -245,7 +260,8 @@ document.addEventListener('DOMContentLoaded', function () {
             destino: destino,
             hora: hora,
             fecha: fecha,
-            pasajeros: pasajeros
+            pasajeros: pasajeros,
+            asientosAleatorios: JSON.parse(sessionStorage.getItem('asientosAleatorios')) || []
         };
 
         let misVuelos = JSON.parse(localStorage.getItem('misVuelos')) || [];
