@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="../css/components/botones.css" />
     <link rel="stylesheet" href="../css/pages/formularios.css" />
 </head>
+
 <body>
     <header class="header">
         <div class="header-logo-container">
@@ -50,18 +52,25 @@
             <div id="acuerdos" class="contenedor-acuerdos">
                 <h3>Acuerdos y especificaciones</h3>
                 <div id="acuerdos-general" class="texto-acuerdo activo">
-                    <p><strong>Formulario General:</strong> Ingrese los datos de contacto y el número de personas que viajarán.</p>
+                    <p><strong>Formulario General:</strong> Ingrese los datos de contacto y el número de personas que
+                        viajarán.</p>
                     <p><strong>Tipo de Cabina:</strong> Turista (clase estándar) o Economy-Club (premium).</p>
                     <p><strong>Correo de contacto:</strong> Email donde se enviará la confirmación de la reserva.</p>
-                    <p><strong>Teléfono de contacto:</strong> Seleccione el prefijo de su país y escriba el número local.</p>
-                    <p><strong>Número de pasajeros:</strong> Máximo 9 por reserva online. Para grupos mayores, contacte con la aerolínea.</p>
+                    <p><strong>Teléfono de contacto:</strong> Seleccione el prefijo de su país y escriba el número
+                        local.</p>
+                    <p><strong>Número de pasajeros:</strong> Máximo 9 por reserva online. Para grupos mayores, contacte
+                        con la aerolínea.</p>
                 </div>
                 <div id="acuerdos-especifico" class="texto-acuerdo no-activo">
-                    <p><strong>Formulario Específico:</strong> Datos personales de cada pasajero. Son obligatorios nombre, apellido, fecha de nacimiento y sexo.</p>
+                    <p><strong>Formulario Específico:</strong> Datos personales de cada pasajero. Son obligatorios
+                        nombre, apellido, fecha de nacimiento y sexo.</p>
                     <p><strong>Fecha de Nacimiento:</strong> Se usa para determinar si es menor de edad.</p>
-                    <p><strong>Teléfono de Contacto:</strong> Seleccione el prefijo de su país y escriba el número local.</p>
-                    <p><strong>Asistencia especial:</strong> Si requiere ayuda, por favor indíquelo. Las filas de emergencia no estarán disponibles para usted.</p>
-                    <p><strong>Representante:</strong> Los menores de edad deben estar vinculados a un adulto del grupo.</p>
+                    <p><strong>Teléfono de Contacto:</strong> Seleccione el prefijo de su país y escriba el número
+                        local.</p>
+                    <p><strong>Asistencia especial:</strong> Si requiere ayuda, por favor indíquelo. Las filas de
+                        emergencia no estarán disponibles para usted.</p>
+                    <p><strong>Representante:</strong> Los menores de edad deben estar vinculados a un adulto del grupo.
+                    </p>
                 </div>
             </div>
         </div>
@@ -76,6 +85,7 @@
                     <select id="tipo-cabina">
                         <option value="turista">Turista</option>
                         <option value="economy-club">Economy-Club</option>
+                        <option value="premium">Premium</option>
                     </select>
                 </div>
                 <div class="grupo-campo">
@@ -196,7 +206,8 @@
                     </div>
                     <div class="botones-formulario">
                         <button id="btn-regresar" class="btn-accion-formulario">&lt;&lt; | Regresar |</button>
-                        <button id="btn-siguiente-especifico" class="btn-accion-formulario">| Siguiente | &gt;&gt;</button>
+                        <button id="btn-siguiente-especifico" class="btn-accion-formulario">| Siguiente |
+                            &gt;&gt;</button>
                     </div>
                 </div>
             </div>
@@ -211,15 +222,21 @@
         <div class="modal-body">
             <p>Bienvenido a BelViaggio. Al utilizar nuestro sistema de reservas, aceptas los siguientes términos:</p>
             <ol class="lista-legal">
-                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y simulación de reservas de vuelos comerciales.</li>
-                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos y verdaderos al momento de realizar cualquier reserva.</li>
-                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a la disponibilidad del sistema en tiempo real.</li>
-                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
-                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están protegidos y son de uso exclusivo de sus creadores.</li>
+                <li><strong>Uso de la Plataforma:</strong> BelViaggio es una interfaz diseñada para la búsqueda y
+                    simulación de reservas de vuelos comerciales.</li>
+                <li><strong>Veracidad de la Información:</strong> El usuario se compromete a proporcionar datos exactos
+                    y verdaderos al momento de realizar cualquier reserva.</li>
+                <li><strong>Disponibilidad y Precios:</strong> Los asientos y los estados de los vuelos están sujetos a
+                    la disponibilidad del sistema en tiempo real.</li>
+                <li><strong>Políticas de Cancelación:</strong> Toda modificación o cancelación de un vuelo procesado
+                    dependerá exclusivamente de las normativas de la aerolínea correspondiente.</li>
+                <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están
+                    protegidos y son de uso exclusivo de sus creadores.</li>
             </ol>
         </div>
     </dialog>
 
     <script src="../js/formularios.js"></script>
 </body>
+
 </html>
