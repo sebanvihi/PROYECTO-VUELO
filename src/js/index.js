@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTerminos = document.getElementById('modal-terminos');
     const btnCerrarTerminos = document.getElementById('cerrar-terminos');
 
+    function mostrarAlerta(mensaje) {
+        const modal = document.getElementById('modal-alerta');
+        document.getElementById('mensaje-alerta').textContent = mensaje;
+        modal.showModal();
+        
+        document.getElementById('cerrar-alerta').onclick = () => modal.close();
+        document.getElementById('btn-entendido-alerta').onclick = () => modal.close();
+    }
+
     btnTerminos.addEventListener('click', (e) => {
         e.preventDefault();
         modalTerminos.showModal();
@@ -24,12 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const destino = document.getElementById('destino').value;
         
         if (origen === "" || destino === "") {
-            alert("Por favor, selecciona tanto un origen como un destino para buscar.");
+            mostrarAlerta("Por favor, selecciona tanto un origen como un destino para buscar.");
             return;
         }
 
         if (origen === destino) {
-            alert("El origen y el destino no pueden ser la misma ciudad.");
+            mostrarAlerta("El origen y el destino no pueden ser la misma ciudad.");
             return;
         }
 

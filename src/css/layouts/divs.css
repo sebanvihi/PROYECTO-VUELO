@@ -138,3 +138,15 @@ main {
 .lista-legal li {
     margin-bottom: 12px;
 }
+.btn-cerrar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.btn-cerrar:hover {
+    color: #4cabd3;
+}

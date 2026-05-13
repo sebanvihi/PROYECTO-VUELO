@@ -24,8 +24,8 @@
             <span id="nodo-3" class="nodo">3</span>
         </div>
         <nav>
-            <a href="#" class="headerNav-link">Términos y Condiciones</a>
-            <a href="#" class="headerNav-link">Política de Privacidad</a>
+            <a href="#" id="terminos" class="headerNav-link">Términos y Condiciones</a>
+            <a href="#" id="privacidad" class="headerNav-link">Política de Privacidad</a>
             <a href="#" class="headerNav-link">Acerca de</a>
         </nav>
     </header>
@@ -80,14 +80,7 @@
             <!-- Formulario General (Paso 1) -->
             <div id="formulario-general" class="contenedor-formulario" style="display: flex;">
                 <h3>Formulario General</h3>
-                <div class="grupo-campo">
-                    <label for="tipo-cabina">Tipo de Cabina</label>
-                    <select id="tipo-cabina">
-                        <option value="turista">Turista</option>
-                        <option value="economy-club">Economy-Club</option>
-                        <option value="premium">Premium</option>
-                    </select>
-                </div>
+
                 <div class="grupo-campo">
                     <label for="correo">Correo de contacto</label>
                     <input type="email" id="correo" placeholder="ejemplo@correo.com" />
@@ -138,6 +131,14 @@
                 <!-- Formulario Específico (Paso 2) -->
                 <div id="formulario-especifico" class="contenedor-formulario">
                     <h3>Formulario de Pasajero</h3>
+                    <div class="grupo-campo">
+                        <label for="tipo-cabina-especifico">Clase de Asiento</label>
+                        <select id="tipo-cabina-especifico">
+                            <option value="turista">Turista</option>
+                            <option value="club">Economy-Club</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                    </div>
                     <div class="grupo-campo">
                         <label for="nombre">Nombre(s)</label>
                         <input type="text" id="nombre" placeholder="Pedro Javier" />
@@ -233,6 +234,17 @@
                 <li><strong>Propiedad Intelectual:</strong> El logotipo, diseño y código fuente de BelViaggio están
                     protegidos y son de uso exclusivo de sus creadores.</li>
             </ol>
+        </div>
+    </dialog>
+
+    <dialog id="modal-alerta" class="modal-legal">
+        <div class="modal-header">
+            <h2 style="font-family: 'Chunky', sans-serif; margin: 0;">Atención</h2>
+            <button id="cerrar-alerta" class="btn-cerrar">&times;</button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <p id="mensaje-alerta" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
+            <button id="btn-entendido-alerta" class="btn-accion-formulario" style="display: inline-flex;">Entendido</button>
         </div>
     </dialog>
 

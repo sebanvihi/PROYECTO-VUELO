@@ -10,11 +10,26 @@ document.addEventListener('DOMContentLoaded', function () {
     let asientoSeleccionado = null;
     let pasajeroActivo = 0;
 
-    let pasajeros = [
-        { nombre: 'Luis', apellido: 'Pérez', sexo: 'Masculino', fecha: '15/03/1990', asiento: null, asistencia: 'No', embarazo: null, menor: false, representante: null, clase: 'club' },
-        { nombre: 'Ana', apellido: 'Gómez', sexo: 'Femenino', fecha: '10/10/1985', asiento: null, asistencia: 'No', embarazo: null, menor: false, representante: null, clase: 'premium' },
-        { nombre: 'Carlos', apellido: 'López', sexo: 'Masculino', fecha: '12/06/2015', asiento: null, asistencia: 'No', embarazo: null, menor: true, representante: 'Luis Pérez', clase: 'turista' }
-    ];
+    let pasajeros = [];
+    const datosGuardados = sessionStorage.getItem('pasajerosData');
+    if (datosGuardados) {
+        pasajeros = JSON.parse(datosGuardados);
+    } else {
+        pasajeros = [
+            { nombre: 'Luis', apellido: 'Pérez', sexo: 'Masculino', fecha: '1990-03-15', asiento: null, asistencia: 'No', embarazo: 'No', menor: false, representante: '', clase: 'club' },
+            { nombre: 'Ana', apellido: 'Gómez', sexo: 'Femenino', fecha: '1985-10-10', asiento: null, asistencia: 'No', embarazo: 'No', menor: false, representante: '', clase: 'premium' },
+            { nombre: 'Carlos', apellido: 'López', sexo: 'Masculino', fecha: '2015-06-12', asiento: null, asistencia: 'No', embarazo: 'No', menor: true, representante: 'Luis Pérez', clase: 'turista' }
+        ];
+    }
+
+    function mostrarAlerta(mensaje) {
+        const modal = document.getElementById('modal-alerta');
+        document.getElementById('mensaje-alerta').textContent = mensaje;
+        modal.showModal();
+        
+        document.getElementById('cerrar-alerta').onclick = () => modal.close();
+        document.getElementById('btn-entendido-alerta').onclick = () => modal.close();
+    }
 
     function generarAvion() {
         let html = '';
@@ -113,7 +128,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function ocuparAsientosAleatorios() {
+        let desgloseStr = sessionStorage.getItem('desgloseAsientos');
+        if (!desgloseStr) return;
+        let desglose = JSON.parse(desgloseStr);
+        
+        const clases = ['club', 'premium', 'turista'];
+        
+        clases.forEach(clase => {
+            let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible)`));
+            let disponibles = desglose[clase] || 0;
+            let asientosAOcupar = asientosClase.length - disponibles;
+            
+            if (asientosAOcupar > 0) {
+                // Mezclar asientos de la clase
+                for (let i = asientosClase.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [asientosClase[i], asientosClase[j]] = [asientosClase[j], asientosClase[i]];
+                }
+                
+                // Ocupar los primeros N
+                for (let i = 0; i < asientosAOcupar; i++) {
+                    asientosClase[i].classList.add('ocupado');
+                }
+            }
+        });
+    }
+
     generarAvion();
+    ocuparAsientosAleatorios();
     renderPasajeros();
 
     mapaAsientos.addEventListener('click', function (e) {
@@ -121,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let claseAsiento = e.target.dataset.clase;
             let pasajero = pasajeros[pasajeroActivo];
             if (pasajero && pasajero.clase && pasajero.clase !== claseAsiento) {
-                alert(`Este asiento es de clase ${claseAsiento}, pero tu reserva es de clase ${pasajero.clase}.`);
+                mostrarAlerta(`Este asiento es de clase ${claseAsiento}, pero tu reserva es de clase ${pasajero.clase}.`);
                 return;
             }
             document.querySelectorAll('.asiento.seleccionado').forEach(el => el.classList.remove('seleccionado'));
@@ -150,14 +193,14 @@ document.addEventListener('DOMContentLoaded', function () {
             renderPasajeros();
             asientoSeleccionado = null;
         } else {
-            alert("Por favor, selecciona un asiento disponible primero.");
+            mostrarAlerta("Por favor, selecciona un asiento disponible primero.");
         }
     });
 
     btnConfirmar.addEventListener('click', function () {
         let todosAsignados = pasajeros.every(p => p.asiento !== null);
         if (!todosAsignados) {
-            alert("Aún faltan pasajeros por asignar asiento.");
+            mostrarAlerta("Aún faltan pasajeros por asignar asiento.");
             return;
         }
         let info = `<p><strong>Vuelo:</strong> CCS // MAD</p><p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p><hr>`;
@@ -166,11 +209,32 @@ document.addEventListener('DOMContentLoaded', function () {
             info += `<hr>`;
         });
         document.getElementById('print-info').innerHTML = info;
-        modal.classList.remove('no-activo');
+        modal.showModal();
     });
 
     btnCerrar.addEventListener('click', function () {
-        modal.classList.add('no-activo');
+        modal.close();
         window.location.href = 'index.html';
     });
+
+    const modalTerminos = document.getElementById('modal-terminos');
+    const btnTerminos = document.getElementById('terminos');
+    const btnCerrarTerminos = document.getElementById('cerrar-terminos');
+
+    if(btnTerminos && modalTerminos) {
+        btnTerminos.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalTerminos.showModal();
+        });
+        if(btnCerrarTerminos) {
+            btnCerrarTerminos.addEventListener('click', () => {
+                modalTerminos.close();
+            });
+        }
+        modalTerminos.addEventListener('click', (e) => {
+            if (e.target === modalTerminos) {
+                modalTerminos.close();
+            }
+        });
+    }
 });
