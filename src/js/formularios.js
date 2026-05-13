@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const nodo1 = document.getElementById('nodo-1');
     const nodo2 = document.getElementById('nodo-2');
     const formularioGeneral = document.getElementById('formulario-general');
@@ -20,16 +20,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const asistNo = document.getElementById('asist-no');
     const btnPasajeroAnterior = document.getElementById('btn-pasajero-anterior');
     const btnPasajeroSiguiente = document.getElementById('btn-pasajero-siguiente');
-    
+
     let pasajeroActual = 0;
     let totalPasajeros = 1;
     let pasajerosData = [];
+
+    let fechaHoy = new Date();
+    let fechaMin = new Date();
+    fechaMin.setFullYear(fechaHoy.getFullYear() - 120);
+    fechaNacimiento.max = fechaHoy.toISOString().split("T")[0];
+    fechaNacimiento.min = fechaMin.toISOString().split("T")[0];
 
     function mostrarAlerta(mensaje) {
         const modal = document.getElementById('modal-alerta');
         document.getElementById('mensaje-alerta').textContent = mensaje;
         modal.showModal();
-        
+
         document.getElementById('cerrar-alerta').onclick = () => modal.close();
         document.getElementById('btn-entendido-alerta').onclick = () => modal.close();
     }
@@ -37,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function generarListaPasajeros(num) {
         totalPasajeros = parseInt(num);
         listaPasajeros.innerHTML = '';
-        for(let i=0; i<totalPasajeros; i++) {
+        for (let i = 0; i < totalPasajeros; i++) {
             let span = document.createElement('span');
             span.className = 'nombre-pasajero';
-            if(i===0) span.classList.add('activo');
-            span.textContent = `Pasajero ${i+1}`;
+            if (i === 0) span.classList.add('activo');
+            span.textContent = `Pasajero ${i + 1}`;
             span.dataset.index = i;
-            span.addEventListener('click', function(e){
+            span.addEventListener('click', function (e) {
                 guardarPasajeroForm(pasajeroActual);
                 document.querySelectorAll('.nombre-pasajero').forEach(el => el.classList.remove('activo'));
                 this.classList.add('activo');
@@ -65,17 +71,28 @@ document.addEventListener('DOMContentLoaded', function() {
         pasajerosData[index].representante = document.getElementById('representante').value;
         pasajerosData[index].telefono = document.getElementById('numero-telefono').value;
         pasajerosData[index].clase = document.getElementById('tipo-cabina-especifico').value;
-        
+        pasajerosData[index].nacionalidad = document.getElementById('nacionalidad').value;
+        pasajerosData[index].tipoDocumento = document.getElementById('tipo-documento').value;
+        pasajerosData[index].numeroDocumento = document.getElementById('numero-documento').value;
+        pasajerosData[index].paisEmisor = document.getElementById('pais-emisor').value;
+        pasajerosData[index].vencimientoDocumento = document.getElementById('vencimiento-documento').value;
+        pasajerosData[index].certificadoEmbarazo = document.getElementById('acepta-certificado-emb').checked;
+        pasajerosData[index].infanteAsiento = document.getElementById('infante-regazo').checked ? 'regazo' : 'asiento';
+
         let menor = false;
-        if(pasajerosData[index].fecha) {
+        let infante = false;
+        if (pasajerosData[index].fecha) {
             let fecha = new Date(pasajerosData[index].fecha);
-            let hoy = new Date();
+            let fechaVueloStr = sessionStorage.getItem('vueloFecha');
+            let hoy = fechaVueloStr ? new Date(fechaVueloStr) : new Date();
             let edad = hoy.getFullYear() - fecha.getFullYear();
             let m = hoy.getMonth() - fecha.getMonth();
             if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
             menor = (edad < 18);
+            infante = (edad < 2);
         }
         pasajerosData[index].menor = menor;
+        pasajerosData[index].infante = infante;
     }
 
     function cargarPasajeroForm(index) {
@@ -90,8 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sexo-f').checked = false;
         }
 
-        if (pasajerosData[index].embarazo === 'Si') document.getElementById('emb-si').checked = true;
-        else document.getElementById('emb-no').checked = true;
+        if (pasajerosData[index].embarazo === 'Si') {
+            document.getElementById('emb-si').checked = true;
+            document.getElementById('emb-si').dispatchEvent(new Event('change'));
+        } else {
+            document.getElementById('emb-no').checked = true;
+            document.getElementById('emb-no').dispatchEvent(new Event('change'));
+        }
 
         if (pasajerosData[index].asistencia !== 'No') {
             document.getElementById('asist-si').checked = true;
@@ -104,11 +126,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('numero-telefono').value = pasajerosData[index].telefono;
         document.getElementById('tipo-cabina-especifico').value = pasajerosData[index].clase || 'turista';
-        
+        document.getElementById('nacionalidad').value = pasajerosData[index].nacionalidad || 'Venezolano';
+        document.getElementById('tipo-documento').value = pasajerosData[index].tipoDocumento || 'Pasaporte';
+        document.getElementById('numero-documento').value = pasajerosData[index].numeroDocumento || '';
+        document.getElementById('pais-emisor').value = pasajerosData[index].paisEmisor || 'Venezuela';
+        document.getElementById('vencimiento-documento').value = pasajerosData[index].vencimientoDocumento || '';
+        document.getElementById('acepta-certificado-emb').checked = pasajerosData[index].certificadoEmbarazo || false;
+
+        if (pasajerosData[index].infanteAsiento === 'asiento') {
+            document.getElementById('infante-propio').checked = true;
+        } else {
+            document.getElementById('infante-regazo').checked = true;
+        }
+
         document.getElementById('fecha-nacimiento').dispatchEvent(new Event('input'));
         if (pasajerosData[index].sexo === 'Femenino') sexoF.dispatchEvent(new Event('change'));
         else sexoM.dispatchEvent(new Event('change'));
-        
+
         actualizarSelectRepresentantes(index);
         document.getElementById('representante').value = pasajerosData[index].representante;
     }
@@ -116,56 +150,71 @@ document.addEventListener('DOMContentLoaded', function() {
     function actualizarSelectRepresentantes(indexActual = -1) {
         let select = document.getElementById('representante');
         select.innerHTML = '<option value="">Seleccione un representante</option>';
-        for(let i=0; i<pasajerosData.length; i++) {
+        for (let i = 0; i < pasajerosData.length; i++) {
             if (i !== indexActual && !pasajerosData[i].menor && pasajerosData[i].nombre) {
                 let option = document.createElement('option');
                 option.value = `${pasajerosData[i].nombre} ${pasajerosData[i].apellido}`;
-                option.textContent = `Pasajero ${i+1}: ${pasajerosData[i].nombre} ${pasajerosData[i].apellido}`;
+                option.textContent = `Pasajero ${i + 1}: ${pasajerosData[i].nombre} ${pasajerosData[i].apellido}`;
                 select.appendChild(option);
             }
         }
     }
 
-    btnPasajeroAnterior.addEventListener('click', function() {
+    btnPasajeroAnterior.addEventListener('click', function () {
         if (pasajeroActual > 0) {
             document.querySelector(`.nombre-pasajero[data-index="${pasajeroActual - 1}"]`).click();
         }
     });
 
-    btnPasajeroSiguiente.addEventListener('click', function() {
+    btnPasajeroSiguiente.addEventListener('click', function () {
         if (pasajeroActual < totalPasajeros - 1) {
             document.querySelector(`.nombre-pasajero[data-index="${pasajeroActual + 1}"]`).click();
         }
     });
 
     // Paso 1 → Paso 2
-    btnSiguienteGeneral.addEventListener('click', function(){
+    btnSiguienteGeneral.addEventListener('click', function () {
         let correo = document.getElementById('correo').value;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if(!correo) { mostrarAlerta('Complete el campo de correo de contacto.'); return; }
-        if(!emailRegex.test(correo)) { mostrarAlerta('Por favor, ingrese un correo electrónico válido.'); return; }
-        
+        if (!correo) { mostrarAlerta('Complete el campo de correo de contacto.'); return; }
+        if (!emailRegex.test(correo)) { mostrarAlerta('Por favor, ingrese un correo electrónico válido.'); return; }
+
         let telGeneral = document.getElementById('numero-telefono-general').value.replace(/\s+/g, '');
-        if(!/^\d{7,15}$/.test(telGeneral)) {
+        if (!/^\d{7,15}$/.test(telGeneral)) {
             mostrarAlerta('El número de teléfono general debe contener entre 7 y 15 dígitos.');
             return;
         }
-        
+
         nodo1.classList.remove('activo');
         nodo2.classList.add('activo');
-        
+
         formularioGeneral.style.display = 'none';
         contenedorEspecifico.style.display = 'flex';
-        
+
         acuerdosGeneral.classList.remove('activo');
         acuerdosGeneral.classList.add('no-activo');
         acuerdosEspecifico.classList.remove('no-activo');
         acuerdosEspecifico.classList.add('activo');
-        
+
+        const CIUDADES_PAISES = {
+            "Caracas": "Venezuela", "Valencia": "Venezuela", "Maracaibo": "Venezuela", "Porlamar": "Venezuela",
+            "Madrid": "España", "Bogotá": "Colombia", "Miami": "Estados Unidos", "Panamá": "Panamá", "Buenos Aires": "Argentina", "Lima": "Perú"
+        };
+        let vueloOrigen = sessionStorage.getItem('vueloOrigen');
+        let vueloDestino = sessionStorage.getItem('vueloDestino');
+        let paisOrigen = CIUDADES_PAISES[vueloOrigen] || "Venezuela";
+        let paisDestino = CIUDADES_PAISES[vueloDestino] || "Venezuela";
+        let esInternacional = paisOrigen !== paisDestino;
+        if (esInternacional) {
+            document.getElementById('campo-vencimiento').classList.remove('no-visible');
+        } else {
+            document.getElementById('campo-vencimiento').classList.add('no-visible');
+        }
+
         generarListaPasajeros(numPasajerosSelect.value);
-        
+
         pasajerosData = [];
-        for(let i=0; i<totalPasajeros; i++) {
+        for (let i = 0; i < totalPasajeros; i++) {
             pasajerosData.push({
                 nombre: '',
                 apellido: '',
@@ -177,6 +226,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 telefono: '',
                 menor: false,
                 clase: 'turista',
+                nacionalidad: 'Venezolano',
+                tipoDocumento: 'Pasaporte',
+                numeroDocumento: '',
+                paisEmisor: 'Venezuela',
+                vencimientoDocumento: '',
+                certificadoEmbarazo: false,
+                infante: false,
+                infanteAsiento: 'regazo',
                 asiento: null
             });
         }
@@ -185,13 +242,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Paso 2 → Paso 1
-    btnRegresar.addEventListener('click', function(){
+    btnRegresar.addEventListener('click', function () {
         nodo2.classList.remove('activo');
         nodo1.classList.add('activo');
-        
+
         formularioGeneral.style.display = 'flex';
         contenedorEspecifico.style.display = 'none';
-        
+
         acuerdosEspecifico.classList.remove('activo');
         acuerdosEspecifico.classList.add('no-activo');
         acuerdosGeneral.classList.remove('no-activo');
@@ -199,43 +256,116 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Paso 2 → Reservas
-    btnSiguienteEspecifico.addEventListener('click', function(){
+    btnSiguienteEspecifico.addEventListener('click', function () {
         guardarPasajeroForm(pasajeroActual);
-        
+
         let conteoClases = { club: 0, premium: 0, turista: 0 };
+        const CIUDADES_PAISES = {
+            "Caracas": "Venezuela", "Valencia": "Venezuela", "Maracaibo": "Venezuela", "Porlamar": "Venezuela",
+            "Madrid": "España", "Bogotá": "Colombia", "Miami": "Estados Unidos", "Panamá": "Panamá", "Buenos Aires": "Argentina", "Lima": "Perú"
+        };
+        let vueloOrigen = sessionStorage.getItem('vueloOrigen');
+        let vueloDestino = sessionStorage.getItem('vueloDestino');
+        let paisOrigen = CIUDADES_PAISES[vueloOrigen] || "Venezuela";
+        let paisDestino = CIUDADES_PAISES[vueloDestino] || "Venezuela";
+        let esInternacional = paisOrigen !== paisDestino;
 
-        for(let i=0; i<pasajerosData.length; i++) {
-            if(!pasajerosData[i].nombre || !pasajerosData[i].apellido || !pasajerosData[i].fecha) {
-                mostrarAlerta(`Complete los campos obligatorios del Pasajero ${i+1}`);
+        let todosMenores = true;
+        let documentosVistos = new Set();
+
+        for (let i = 0; i < pasajerosData.length; i++) {
+            if (!pasajerosData[i].nombre || !pasajerosData[i].apellido || !pasajerosData[i].fecha) {
+                mostrarAlerta(`Complete los campos obligatorios del Pasajero ${i + 1}`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
-            
+
+            if (pasajerosData[i].nombre.length < 2 || pasajerosData[i].apellido.length < 2) {
+                mostrarAlerta(`El nombre y apellido del Pasajero ${i + 1} deben tener al menos 2 caracteres.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
             const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
-            if(!nombreRegex.test(pasajerosData[i].nombre)) {
-                mostrarAlerta(`El nombre del Pasajero ${i+1} solo debe contener letras.`);
+            if (!nombreRegex.test(pasajerosData[i].nombre)) {
+                mostrarAlerta(`El nombre del Pasajero ${i + 1} solo debe contener letras.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
-            if(!nombreRegex.test(pasajerosData[i].apellido)) {
-                mostrarAlerta(`El apellido del Pasajero ${i+1} solo debe contener letras.`);
-                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
-                return;
-            }
-            
-            let telObj = pasajerosData[i].telefono.replace(/\s+/g, '');
-            if(!/^\d{7,15}$/.test(telObj)) {
-                mostrarAlerta(`El número de teléfono del Pasajero ${i+1} debe contener entre 7 y 15 dígitos.`);
+            if (!nombreRegex.test(pasajerosData[i].apellido)) {
+                mostrarAlerta(`El apellido del Pasajero ${i + 1} solo debe contener letras.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
 
-            conteoClases[pasajerosData[i].clase]++;
+            if (!pasajerosData[i].numeroDocumento || pasajerosData[i].numeroDocumento.length < 2) {
+                mostrarAlerta(`Complete el número de documento del Pasajero ${i + 1} (mínimo 2 caracteres).`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            if (documentosVistos.has(pasajerosData[i].numeroDocumento)) {
+                mostrarAlerta(`El número de documento del Pasajero ${i + 1} ya ha sido registrado para otro pasajero.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+            documentosVistos.add(pasajerosData[i].numeroDocumento);
+
+            if (esInternacional) {
+                if (!pasajerosData[i].vencimientoDocumento) {
+                    mostrarAlerta(`El vuelo es internacional. Debe indicar la fecha de vencimiento del documento del Pasajero ${i + 1}.`);
+                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                    return;
+                }
+
+                let fechaVueloStr = sessionStorage.getItem('vueloFecha');
+                let vueloDate = fechaVueloStr ? new Date(fechaVueloStr) : new Date();
+                let limiteDate = new Date(vueloDate);
+                limiteDate.setMonth(limiteDate.getMonth() + 6);
+
+                let vencimientoDate = new Date(pasajerosData[i].vencimientoDocumento);
+                if (vencimientoDate < limiteDate) {
+                    mostrarAlerta(`Para vuelos internacionales, el documento del Pasajero ${i + 1} debe tener una vigencia de al menos 6 meses posteriores a la fecha del vuelo.`);
+                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                    return;
+                }
+            }
+
+            if (pasajerosData[i].embarazo === 'Si' && !pasajerosData[i].certificadoEmbarazo) {
+                mostrarAlerta(`El Pasajero ${i + 1} indicó embarazo. Debe marcar la casilla confirmando que requerirá certificado médico si tiene más de 28 semanas.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            let telObj = pasajerosData[i].telefono.replace(/\s+/g, '');
+            if (!/^\d{7,15}$/.test(telObj)) {
+                mostrarAlerta(`El número de teléfono del Pasajero ${i + 1} debe contener entre 7 y 15 dígitos.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            if (!pasajerosData[i].menor) todosMenores = false;
+
+            if (pasajerosData[i].menor && !pasajerosData[i].representante) {
+                let msj = pasajerosData[i].infante ? `El Pasajero ${i + 1} es un infante menor de 2 años y estrictamente debe tener un representante asignado.` : `El Pasajero ${i + 1} es menor de edad y debe tener un representante asignado.`;
+                mostrarAlerta(msj);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            if (!pasajerosData[i].infante || pasajerosData[i].infanteAsiento === 'asiento') {
+                conteoClases[pasajerosData[i].clase]++;
+            }
+        }
+
+        if (todosMenores && pasajerosData.length > 0) {
+            mostrarAlerta('La reserva contiene únicamente menores de edad. Por favor, utilice el servicio de "Menor no acompañado" contactando directamente con la aerolínea. Esta reserva web no puede continuar.');
+            return;
         }
 
         let desgloseStr = sessionStorage.getItem('desgloseAsientos');
         let desglose = desgloseStr ? JSON.parse(desgloseStr) : { club: 8, premium: 48, turista: 69 };
-        
+
         if (conteoClases.club > desglose.club) {
             mostrarAlerta(`Solo hay ${desglose.club} asiento(s) de Economy-Club disponibles, pero has seleccionado ${conteoClases.club}.`);
             return;
@@ -254,55 +384,61 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- Lógica condicional ---
-    fechaNacimiento.addEventListener('input', function(){
+    fechaNacimiento.addEventListener('input', function () {
         let fecha = new Date(this.value);
-        if(isNaN(fecha.getTime())) {
+        if (isNaN(fecha.getTime())) {
             campoRepresentante.classList.add('no-visible');
             return;
         }
-        let hoy = new Date();
+        let fechaVueloStr = sessionStorage.getItem('vueloFecha');
+        let hoy = fechaVueloStr ? new Date(fechaVueloStr) : new Date();
         let edad = hoy.getFullYear() - fecha.getFullYear();
         let m = hoy.getMonth() - fecha.getMonth();
         if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
-        if(edad < 18) campoRepresentante.classList.remove('no-visible');
+        
+        if (edad < 18) campoRepresentante.classList.remove('no-visible');
         else campoRepresentante.classList.add('no-visible');
+
+        if (edad < 2) document.getElementById('campo-infante-asiento').classList.remove('no-visible');
+        else document.getElementById('campo-infante-asiento').classList.add('no-visible');
     });
 
-    sexoF.addEventListener('change', function(){
-        if(this.checked) {
-            let fecha = new Date(fechaNacimiento.value);
-            if(isNaN(fecha.getTime())) return;
-            let hoy = new Date();
-            let edad = hoy.getFullYear() - fecha.getFullYear();
-            let m = hoy.getMonth() - fecha.getMonth();
-            if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
-            if(edad >= 18) campoEmbarazo.classList.remove('no-visible');
-            else campoEmbarazo.classList.add('no-visible');
+    sexoF.addEventListener('change', function () {
+        if (this.checked) {
+            campoEmbarazo.classList.remove('no-visible');
         }
     });
-    sexoM.addEventListener('change', function(){
-        if(this.checked) {
+    sexoM.addEventListener('change', function () {
+        if (this.checked) {
             campoEmbarazo.classList.add('no-visible');
+            document.getElementById('campo-certificado-embarazo').classList.add('no-visible');
         }
     });
 
-    asistSi.addEventListener('change', function() {
-        if(this.checked) campoAsistencia.classList.remove('no-visible');
+    document.getElementById('emb-si').addEventListener('change', function () {
+        if (this.checked) document.getElementById('campo-certificado-embarazo').classList.remove('no-visible');
     });
-    asistNo.addEventListener('change', function() {
-        if(this.checked) campoAsistencia.classList.add('no-visible');
+    document.getElementById('emb-no').addEventListener('change', function () {
+        if (this.checked) document.getElementById('campo-certificado-embarazo').classList.add('no-visible');
+    });
+
+    asistSi.addEventListener('change', function () {
+        if (this.checked) campoAsistencia.classList.remove('no-visible');
+    });
+    asistNo.addEventListener('change', function () {
+        if (this.checked) campoAsistencia.classList.add('no-visible');
     });
 
     const btnTerminos = document.getElementById('terminos');
     const modalTerminos = document.getElementById('modal-terminos');
     const btnCerrarTerminos = document.getElementById('cerrar-terminos');
 
-    if(modalTerminos && btnTerminos) {
+    if (modalTerminos && btnTerminos) {
         btnTerminos.addEventListener('click', (e) => {
             e.preventDefault();
             modalTerminos.showModal();
         });
-        if(btnCerrarTerminos) {
+        if (btnCerrarTerminos) {
             btnCerrarTerminos.addEventListener('click', () => {
                 modalTerminos.close();
             });
@@ -313,4 +449,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    document.getElementById('nombre').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    });
+    document.getElementById('apellido').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    });
 });

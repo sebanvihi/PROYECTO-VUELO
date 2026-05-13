@@ -141,6 +141,9 @@ function renderizarTabla(vuelos, cuerpoTabla) {
                 sessionStorage.setItem('asientosDisponibles', vuelo.asientos);
                 sessionStorage.setItem('desgloseAsientos', JSON.stringify(vuelo.desglose));
                 sessionStorage.setItem('vueloId', vuelo.id);
+                sessionStorage.setItem('vueloFecha', vuelo.fechaHora.split(' | ')[0]);
+                sessionStorage.setItem('vueloOrigen', vuelo.origen);
+                sessionStorage.setItem('vueloDestino', vuelo.destino);
                 window.location.href = 'formularios.html';
             });
         }

@@ -141,12 +141,12 @@
                         </select>
                     </div>
                     <div class="grupo-campo">
-                        <label for="nombre">Nombre(s)</label>
-                        <input type="text" id="nombre" placeholder="Pedro Javier" />
+                        <label for="nombre">Nombre(s) (Tal cual su documento oficial)</label>
+                        <input type="text" id="nombre" placeholder="Pedro Javier" minlength="2" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" />
                     </div>
                     <div class="grupo-campo">
-                        <label for="apellido">Apellido(s)</label>
-                        <input type="text" id="apellido" />
+                        <label for="apellido">Apellido(s) (Tal cual su documento oficial)</label>
+                        <input type="text" id="apellido" minlength="2" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" />
                     </div>
                     <div class="grupo-campo">
                         <label for="fecha-nacimiento">Fecha de Nacimiento</label>
@@ -155,6 +155,15 @@
                     <div id="campo-representante" class="grupo-campo no-visible">
                         <label for="representante">Indique su representante</label>
                         <select id="representante"></select>
+                    </div>
+                    <div id="campo-infante-asiento" class="grupo-campo no-visible">
+                        <label>¿El infante viaja en el regazo del representante o en un asiento propio?</label>
+                        <div class="radio-group">
+                            <input type="radio" id="infante-regazo" name="infante_asiento" value="regazo" checked />
+                            <label for="infante-regazo">En regazo</label>
+                            <input type="radio" id="infante-propio" name="infante_asiento" value="asiento" />
+                            <label for="infante-propio">Asiento propio</label>
+                        </div>
                     </div>
                     <div class="grupo-campo">
                         <label>Sexo</label>
@@ -173,6 +182,10 @@
                             <input type="radio" id="emb-no" name="embarazo" value="No" checked />
                             <label for="emb-no">No</label>
                         </div>
+                        <div id="campo-certificado-embarazo" class="checkbox-embarazo no-visible" style="margin-top: 10px;">
+                            <input type="checkbox" id="acepta-certificado-emb" />
+                            <label for="acepta-certificado-emb" style="display:inline; font-size: 0.9em; font-weight:normal;">Comprendo que si tengo más de 28 semanas de gestación, requeriré un certificado médico para abordar.</label>
+                        </div>
                     </div>
                     <div class="grupo-campo">
                         <label>Numero de Teléfono de Contacto</label>
@@ -186,6 +199,48 @@
                             </select>
                             <input type="tel" id="numero-telefono" placeholder="412 1234567" class="input-numero" />
                         </div>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="nacionalidad">Nacionalidad</label>
+                        <select id="nacionalidad">
+                            <option value="Venezolano">Venezolano</option>
+                            <option value="Español">Español</option>
+                            <option value="Colombiano">Colombiano</option>
+                            <option value="Estadounidense">Estadounidense</option>
+                            <option value="Panameño">Panameño</option>
+                            <option value="Argentino">Argentino</option>
+                            <option value="Peruano">Peruano</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="tipo-documento">Tipo de Documento</label>
+                        <select id="tipo-documento">
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="DNI">DNI</option>
+                            <option value="Cédula">Cédula de Identidad</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="numero-documento">Número de Documento</label>
+                        <input type="text" id="numero-documento" placeholder="12345678" minlength="2" />
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="pais-emisor">País Emisor</label>
+                        <select id="pais-emisor">
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="España">España</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Estados Unidos">Estados Unidos</option>
+                            <option value="Panamá">Panamá</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Perú">Perú</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div id="campo-vencimiento" class="grupo-campo no-visible">
+                        <label for="vencimiento-documento">Fecha de Vencimiento del Documento</label>
+                        <input type="date" id="vencimiento-documento" />
                     </div>
                     <div class="grupo-campo">
                         <label>¿Necesita asistencia especial?</label>
