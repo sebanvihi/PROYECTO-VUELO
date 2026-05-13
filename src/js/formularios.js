@@ -63,9 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    let asientosDisponibles = parseInt(sessionStorage.getItem('asientosDisponibles'));
+    if (isNaN(asientosDisponibles) || asientosDisponibles <= 0) asientosDisponibles = 9;
+    let maxPasajeros = Math.min(asientosDisponibles, 9);
+    
+    numPasajerosSelect.innerHTML = '';
+    for (let i = 1; i <= maxPasajeros; i++) {
+        let option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        numPasajerosSelect.appendChild(option);
+    }
+
     let storedNumPasajeros = sessionStorage.getItem('numPasajeros');
-    if (storedNumPasajeros) {
-        document.getElementById('num-pasajeros').value = storedNumPasajeros;
+    if (storedNumPasajeros && parseInt(storedNumPasajeros) <= maxPasajeros) {
+        numPasajerosSelect.value = storedNumPasajeros;
+    } else {
+        numPasajerosSelect.value = "1";
     }
 
     let origenStr = sessionStorage.getItem('vueloOrigen');
@@ -402,10 +416,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            if (!/^\d+$/.test(pasajerosData[i].numeroDocumento)) {
-                mostrarAlerta(`El número de documento del Pasajero ${i + 1} solo debe contener números y no estar vacío.`);
-                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
-                return;
+            let tipoDoc = pasajerosData[i].tipoDocumento;
+            let numDoc = pasajerosData[i].numeroDocumento;
+
+            if (tipoDoc === 'Pasaporte') {
+                if (!/^[0-9A-F]+$/.test(numDoc)) {
+                    mostrarAlerta(`El Pasaporte del Pasajero ${i + 1} solo debe contener números y letras A-F, y no estar vacío.`);
+                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                    return;
+                }
+            } else {
+                if (!/^\d+$/.test(numDoc)) {
+                    mostrarAlerta(`El número de documento del Pasajero ${i + 1} solo debe contener números y no estar vacío.`);
+                    document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                    return;
+                }
             }
 
             if (documentosVistos.has(pasajerosData[i].numeroDocumento)) {
@@ -518,10 +543,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // --- Lógica condicional ---
+    function actualizarEmbarazoVisibilidad() {
+        let edad = calcularEdadExacta(fechaNacimiento.value, sessionStorage.getItem('vueloFecha'));
+        if (sexoF.checked && edad >= 12) {
+            campoEmbarazo.classList.remove('no-visible');
+        } else {
+            campoEmbarazo.classList.add('no-visible');
+            document.getElementById('campo-certificado-embarazo').classList.add('no-visible');
+            document.getElementById('emb-no').checked = true;
+        }
+    }
+
     fechaNacimiento.addEventListener('input', function () {
         let edad = calcularEdadExacta(this.value, sessionStorage.getItem('vueloFecha'));
         if (edad === -1 || isNaN(edad)) {
             campoRepresentante.classList.add('no-visible');
+            document.getElementById('campo-infante-asiento').classList.add('no-visible');
+            actualizarEmbarazoVisibilidad();
             return;
         }
         
@@ -530,19 +568,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (edad < 2) document.getElementById('campo-infante-asiento').classList.remove('no-visible');
         else document.getElementById('campo-infante-asiento').classList.add('no-visible');
+
+        actualizarEmbarazoVisibilidad();
     });
 
-    sexoF.addEventListener('change', function () {
-        if (this.checked) {
-            campoEmbarazo.classList.remove('no-visible');
-        }
-    });
-    sexoM.addEventListener('change', function () {
-        if (this.checked) {
-            campoEmbarazo.classList.add('no-visible');
-            document.getElementById('campo-certificado-embarazo').classList.add('no-visible');
-        }
-    });
+    sexoF.addEventListener('change', actualizarEmbarazoVisibilidad);
+    sexoM.addEventListener('change', actualizarEmbarazoVisibilidad);
 
     document.getElementById('emb-si').addEventListener('change', function () {
         if (this.checked) document.getElementById('campo-certificado-embarazo').classList.remove('no-visible');
@@ -592,8 +623,22 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('numero-telefono').addEventListener('input', function (e) {
         this.value = this.value.replace(/[^\d]/g, '');
     });
-    document.getElementById('numero-documento').addEventListener('input', function (e) {
-        this.value = this.value.replace(/[^\d]/g, '');
+    const selectTipoDoc = document.getElementById('tipo-documento');
+    const inputNumDoc = document.getElementById('numero-documento');
+
+    selectTipoDoc.addEventListener('change', function () {
+        inputNumDoc.value = '';
+    });
+
+    inputNumDoc.addEventListener('input', function (e) {
+        let tipo = selectTipoDoc.value;
+        if (tipo === 'Cédula') {
+            this.value = this.value.replace(/[^\d]/g, '').substring(0, 9);
+        } else if (tipo === 'DNI') {
+            this.value = this.value.replace(/[^\d]/g, '').substring(0, 10);
+        } else if (tipo === 'Pasaporte') {
+            this.value = this.value.toUpperCase().replace(/[^0-9A-F]/g, '');
+        }
     });
 
     const btnPrivacidad = document.getElementById('privacidad');
