@@ -26,10 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let pasajerosData = [];
 
     let fechaHoy = new Date();
-    let fechaMin = new Date();
-    fechaMin.setFullYear(fechaHoy.getFullYear() - 120);
     fechaNacimiento.max = fechaHoy.toISOString().split("T")[0];
-    fechaNacimiento.min = fechaMin.toISOString().split("T")[0];
+    fechaNacimiento.min = "1910-01-01";
 
     function calcularEdadExacta(fechaNacimientoStr, fechaVueloStr) {
         if (!fechaNacimientoStr) return -1;
@@ -230,20 +228,27 @@ document.addEventListener('DOMContentLoaded', function () {
     // Paso 1 → Paso 2
     btnSiguienteGeneral.addEventListener('click', function () {
         let correo = document.getElementById('correo').value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]+$/;
         if (!correo) { mostrarAlerta('Complete el campo de correo de contacto.'); return; }
         if (!emailRegex.test(correo)) { mostrarAlerta('Por favor, ingrese un correo electrónico válido.'); return; }
 
         let telGeneralCompleto = document.getElementById('codigo-pais-general').value + ' ' + document.getElementById('numero-telefono-general').value;
-        let telGeneral = telGeneralCompleto.replace(/[\s+]/g, '');
-        if (!/^\d{7,15}$/.test(telGeneral)) {
-            mostrarAlerta('El número de teléfono general debe contener entre 7 y 15 dígitos.');
+        let telGeneralSoloNum = document.getElementById('numero-telefono-general').value.replace(/[\s]/g, '');
+        if (!/^\d{7,15}$/.test(telGeneralSoloNum)) {
+            mostrarAlerta('El número de teléfono general debe contener entre 7 y 15 dígitos y solo números.');
+            return;
+        }
+
+        let claveReserva = document.getElementById('clave-reserva').value;
+        if (!claveReserva || claveReserva.trim().length === 0) {
+            mostrarAlerta('Por favor, ingrese una clave de reserva.');
             return;
         }
 
         sessionStorage.setItem('contactoCorreo', correo);
         sessionStorage.setItem('contactoTelefono', telGeneralCompleto);
         sessionStorage.setItem('numPasajeros', numPasajerosSelect.value);
+        sessionStorage.setItem('claveReserva', claveReserva);
 
         nodo1.classList.remove('activo');
         nodo2.classList.add('activo');
@@ -357,14 +362,37 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let edadExacta = calcularEdadExacta(pasajerosData[i].fecha, sessionStorage.getItem('vueloFecha'));
-            if (edadExacta < 0 || edadExacta > 120) {
-                mostrarAlerta(`La fecha de nacimiento del Pasajero ${i + 1} es inválida. No puede ser mayor a la fecha del vuelo ni superar los 120 años.`);
+            
+            let todayStr = new Date().toISOString().split("T")[0];
+            if (pasajerosData[i].fecha > todayStr) {
+                mostrarAlerta(`La fecha de nacimiento del Pasajero ${i + 1} no puede ser mayor a la fecha actual.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+            if (pasajerosData[i].fecha < "1910-01-01") {
+                mostrarAlerta(`La fecha de nacimiento del Pasajero ${i + 1} no puede ser anterior al 1 de enero de 1910.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+            if (edadExacta === 0) {
+                mostrarAlerta(`La edad del Pasajero ${i + 1} no puede ser 0.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
 
-            if (pasajerosData[i].nombre.length < 2 || pasajerosData[i].apellido.length < 2) {
-                mostrarAlerta(`El nombre y apellido del Pasajero ${i + 1} deben tener al menos 2 caracteres.`);
+            if (!pasajerosData[i].sexo) {
+                mostrarAlerta(`Debe seleccionar el sexo del Pasajero ${i + 1}.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            if (pasajerosData[i].nombre.length < 3 || pasajerosData[i].nombre.length > 40) {
+                mostrarAlerta(`El nombre del Pasajero ${i + 1} debe tener entre 3 y 40 caracteres.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+            if (pasajerosData[i].apellido.length < 3 || pasajerosData[i].apellido.length > 50) {
+                mostrarAlerta(`El apellido del Pasajero ${i + 1} debe tener entre 3 y 50 caracteres.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
@@ -381,8 +409,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            if (!pasajerosData[i].numeroDocumento || pasajerosData[i].numeroDocumento.length < 2) {
-                mostrarAlerta(`Complete el número de documento del Pasajero ${i + 1} (mínimo 2 caracteres).`);
+            if (!/^\d+$/.test(pasajerosData[i].numeroDocumento)) {
+                mostrarAlerta(`El número de documento del Pasajero ${i + 1} solo debe contener números y no estar vacío.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
@@ -422,9 +450,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            let telObj = pasajerosData[i].telefono.replace(/[\s+]/g, '');
-            if (!/^\d{7,15}$/.test(telObj)) {
-                mostrarAlerta(`El número de teléfono del Pasajero ${i + 1} debe contener entre 7 y 15 dígitos.`);
+            let todayStrDocs = new Date().toISOString().split("T")[0];
+            if (pasajerosData[i].vencimientoDocumento && pasajerosData[i].vencimientoDocumento < todayStrDocs) {
+                mostrarAlerta(`El documento ingresado no es válido. Su fecha de validez ha expirado.`);
+                document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
+                return;
+            }
+
+            let telObjParts = pasajerosData[i].telefono.split(' ');
+            let telSoloNum = telObjParts.slice(1).join('').replace(/[\s]/g, '');
+            if (!/^\d{7,15}$/.test(telSoloNum)) {
+                mostrarAlerta(`El número de teléfono del Pasajero ${i + 1} debe contener entre 7 y 15 dígitos y solo números.`);
                 document.querySelector(`.nombre-pasajero[data-index="${i}"]`).click();
                 return;
             }
@@ -555,5 +591,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     document.getElementById('apellido').addEventListener('input', function (e) {
         this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    });
+    
+    document.getElementById('numero-telefono-general').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^\d]/g, '');
+    });
+    document.getElementById('numero-telefono').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^\d]/g, '');
+    });
+    document.getElementById('numero-documento').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^\d]/g, '');
     });
 });

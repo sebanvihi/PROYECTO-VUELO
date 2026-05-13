@@ -108,6 +108,10 @@
                         <option value="9">9</option>
                     </select>
                 </div>
+                <div class="grupo-campo">
+                    <label for="clave-reserva">Clave de reserva</label>
+                    <input type="password" id="clave-reserva" placeholder="Ingrese una clave segura" />
+                </div>
                 <div class="botones-formulario">
                     <button id="btn-siguiente-general" class="btn-accion-formulario">| Siguiente | &gt;&gt;</button>
                 </div>
@@ -132,16 +136,15 @@
                         <select id="tipo-cabina-especifico">
                             <option value="turista">Turista</option>
                             <option value="club">Economy-Club</option>
-                            <option value="premium">Premium</option>
                         </select>
                     </div>
                     <div class="grupo-campo">
                         <label for="nombre">Nombre(s) (Tal cual su documento oficial)</label>
-                        <input type="text" id="nombre" placeholder="Pedro Javier" minlength="2" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" />
+                        <input type="text" id="nombre" placeholder="Ejemplo: Daniel Alejandro" minlength="3" maxlength="40" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" />
                     </div>
                     <div class="grupo-campo">
                         <label for="apellido">Apellido(s) (Tal cual su documento oficial)</label>
-                        <input type="text" id="apellido" minlength="2" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" />
+                        <input type="text" id="apellido" placeholder="Ejemplo: Alvares Martines" minlength="3" maxlength="50" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" />
                     </div>
                     <div class="grupo-campo">
                         <label for="fecha-nacimiento">Fecha de Nacimiento</label>
@@ -163,9 +166,9 @@
                     <div class="grupo-campo">
                         <label>Sexo</label>
                         <div class="radio-group">
-                            <input type="radio" id="sexo-m" name="sexo" value="Masculino" />
+                            <input type="radio" id="sexo-m" name="sexo" value="Masculino" required />
                             <label for="sexo-m">Masculino</label>
-                            <input type="radio" id="sexo-f" name="sexo" value="Femenino" />
+                            <input type="radio" id="sexo-f" name="sexo" value="Femenino" required />
                             <label for="sexo-f">Femenino</label>
                         </div>
                     </div>

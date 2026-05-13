@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         pasajeros = [
             { nombre: 'Luis', apellido: 'Pérez', sexo: 'Masculino', fecha: '1990-03-15', asiento: null, asistencia: 'No', embarazo: 'No', menor: false, representante: '', clase: 'club' },
-            { nombre: 'Ana', apellido: 'Gómez', sexo: 'Femenino', fecha: '1985-10-10', asiento: null, asistencia: 'No', embarazo: 'No', menor: false, representante: '', clase: 'premium' },
+            { nombre: 'Ana', apellido: 'Gómez', sexo: 'Femenino', fecha: '1985-10-10', asiento: null, asistencia: 'No', embarazo: 'No', menor: false, representante: '', clase: 'club' },
             { nombre: 'Carlos', apellido: 'López', sexo: 'Masculino', fecha: '2015-06-12', asiento: null, asistencia: 'No', embarazo: 'No', menor: true, representante: 'Luis Pérez', clase: 'turista' }
         ];
     }
@@ -65,8 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let asientosDer = esClub ? ['D', 'F'] : ['D', 'E', 'F'];
 
             let tipoCabina = 'turista';
-            if (fila <= 2) tipoCabina = 'club';
-            else if (fila <= 10) tipoCabina = 'premium';
+            if (fila <= 10) tipoCabina = 'club';
 
             html += `<div class="fila-avion${claseSeparacion}">`;
 
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (p.asistencia !== 'No') necesidades.push(p.asistencia);
             if (p.embarazo === 'Si') necesidades.push('Embarazo');
             let necStr = necesidades.length > 0 ? necesidades.join('/') : 'Ninguna';
-            let nombreClase = p.clase === 'club' ? 'Economy Club' : (p.clase === 'premium' ? 'Premium' : 'Turista');
+            let nombreClase = p.clase === 'club' ? 'Economy Club' : 'Turista';
             div.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                     <strong style="margin-bottom: 0;">${p.nombre} ${p.apellido}</strong>
@@ -133,11 +132,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!desgloseStr) return;
         let desglose = JSON.parse(desgloseStr);
 
-        const clases = ['club', 'premium', 'turista'];
+        const clases = ['club', 'turista'];
 
         clases.forEach(clase => {
             let asientosClase = Array.from(document.querySelectorAll(`#mapa-asientos .asiento.${clase}:not(.no-disponible)`));
-            let disponibles = desglose[clase] || 0;
+            
+            let disponibles = clase === 'club' ? ((desglose.club || 0) + (desglose.premium || 0)) : (desglose[clase] || 0);
+            
             let asientosAOcupar = asientosClase.length - disponibles;
 
             if (asientosAOcupar > 0) {
@@ -158,6 +159,12 @@ document.addEventListener('DOMContentLoaded', function () {
     generarAvion();
     ocuparAsientosAleatorios();
     renderPasajeros();
+
+    let asientosClubTotales = document.querySelectorAll('#mapa-asientos .asiento.club:not(.no-disponible)').length;
+    let asientosClubOcupados = document.querySelectorAll('#mapa-asientos .asiento.club.ocupado').length;
+    if (asientosClubTotales > 0 && asientosClubTotales === asientosClubOcupados) {
+        mostrarAlerta("Atención: Todos los asientos de Economy-Club están ocupados.");
+    }
 
     mapaAsientos.addEventListener('click', function (e) {
         if (e.target.classList.contains('asiento') && !e.target.classList.contains('ocupado') && !e.target.classList.contains('no-disponible')) {
